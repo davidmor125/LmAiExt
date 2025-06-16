@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת שקיפות מורחבת לתפריט הצף</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .content {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .test-section {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        h1, h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-text {
+            background: rgba(255,255,0,0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .instructions {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>🌟 בדיקת שקיפות מורחבת לתפריט הצף</h1>
+        
+        <div class="instructions">
+            <strong>הוראות לבדיקה:</strong><br>
+            1. בחר טקסט כלשהו בעמוד<br>
+            2. שים לב לשקיפות של הכפתור מעל הרקע הצבעוני<br>
+            3. בדוק את אפקט ה-hover<br>
+            4. שים לב לאפקט הטשטוש (backdrop-filter)
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 טקסט לבחירה</h2>
+            <p>זהו <span class="highlight-text">טקסט לדוגמה</span> שאתה יכול לבחור כדי לבדוק את התפריט הצף.</p>
+            <p>הכפתור צריך להיות שקוף עם רקע לבן בשקיפות של 90% ואפקט טשטוש.</p>
+            <p>כאשר אתה מעביר את העכבר מעל הכפתור, השקיפות צריכה להשתנות ל-95%.</p>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎨 טקסט נוסף על רקע מסובך</h2>
+            <p>הנה עוד טקסט לבחירה על רקע עם הרבה צבעים ואפקטים.</p>
+            <p>בחר את המילים הבאות: <strong>Better Me Extension Test</strong></p>
+            <p>התפריט צריך להיות קריא וברור גם על רקע מורכב זה.</p>
+        </div>
+    </div>
+
+    <script>
+        // בדיוק אותו קוד מהתוסף עם שקיפות מורחבת
+        function createFloatingContextMenu() {
+            const existingMenu = document.getElementById('betterme-context-menu');
+            if (existingMenu) {
+                existingMenu.remove();
+            }
+            
+            const menu = document.createElement('div');
+            menu.id = 'betterme-context-menu';
+            menu.innerHTML = `
+                <button id="betterme-context-btn" style="
+                    background: rgba(255, 255, 255, 0.9);
+                    color: #182857;
+                    border: 1px solid rgba(233, 236, 239, 0.7);
+                    padding: 8px 16px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 600;
+                    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    transition: all 0.3s ease;
+                    white-space: nowrap;
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                ">
+                    שאל Better Me
+                </button>
+            `;
+            
+            menu.style.cssText = `
+                position: absolute;
+                z-index: 999997;
+                display: none;
+                pointer-events: all;
+                animation: fadeInUp 0.3s ease;
+                background: transparent;
+                border-radius: 12px;
+                padding: 8px;
+            `;
+            
+            // הוספת CSS אנימציות
+            if (!document.getElementById('betterme-context-animations')) {
+                const style = document.createElement('style');
+                style.id = 'betterme-context-animations';
+                style.textContent = `
+                    @keyframes fadeInUp {
+                        from {
+                            opacity: 0;
+                            transform: translateY(10px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    
+                    @keyframes fadeOut {
+                        from {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                        to {
+                            opacity: 0;
+                            transform: translateY(-10px);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // אפקטי hover מורחבים
+            const contextBtn = menu.querySelector('#betterme-context-btn');
+            contextBtn.addEventListener('mouseenter', function() {
+                this.style.background = 'rgba(255, 255, 255, 0.95)';
+                this.style.color = '#182857';
+                this.style.transform = 'scale(1.05)';
+                this.style.boxShadow = '0 8px 25px rgba(24, 40, 87, 0.25)';
+                this.style.borderColor = 'rgba(24, 40, 87, 0.8)';
+                this.style.backdropFilter = 'blur(15px)';
+                this.style.webkitBackdropFilter = 'blur(15px)';
+            });
+            
+            contextBtn.addEventListener('mouseleave', function() {
+                this.style.background = 'rgba(255, 255, 255, 0.9)';
+                this.style.color = '#182857';
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px';
+                this.style.borderColor = 'rgba(233, 236, 239, 0.7)';
+                this.style.backdropFilter = 'blur(10px)';
+                this.style.webkitBackdropFilter = 'blur(10px)';
+            });
+            
+            contextBtn.addEventListener('click', function() {
+                alert('התפריט פועל! ✨\nבתוסף האמיתי זה יפתח את חלון Better Me');
+                menu.style.display = 'none';
+            });
+            
+            document.body.appendChild(menu);
+            return menu;
+        }
+        
+        function showContextMenuAtSelection() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            
+            if (selectedText.length > 0) {
+                const menu = createFloatingContextMenu();
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                
+                menu.style.left = rect.left + 'px';
+                menu.style.top = (rect.top - 50) + 'px';
+                menu.style.display = 'block';
+                
+                // התאמה לגבולות המסך
+                const menuRect = menu.getBoundingClientRect();
+                if (menuRect.right > window.innerWidth) {
+                    menu.style.left = (window.innerWidth - menuRect.width - 10) + 'px';
+                }
+                if (menuRect.top < 0) {
+                    menu.style.top = (rect.bottom + 10) + 'px';
+                }
+            }
+        }
+        
+        function hideContextMenu() {
+            const menu = document.getElementById('betterme-context-menu');
+            if (menu) {
+                menu.style.animation = 'fadeOut 0.2s ease';
+                setTimeout(() => {
+                    if (menu && menu.parentNode) {
+                        menu.parentNode.removeChild(menu);
+                    }
+                }, 200);
+            }
+        }
+        
+        // מאזיני אירועים
+        document.addEventListener('mouseup', showContextMenuAtSelection);
+        document.addEventListener('keyup', showContextMenuAtSelection);
+        document.addEventListener('mousedown', hideContextMenu);
+        document.addEventListener('scroll', hideContextMenu);
+        
+        console.log('🌟 בדיקת שקיפות מורחבת נטענה בהצלחה!');
+    </script>
+</body>
+</html>

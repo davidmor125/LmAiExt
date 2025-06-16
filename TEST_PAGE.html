@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דף בדיקה לתוסף AI Summarizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; text-align: center; }
+        h2 { color: #34495e; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .highlight { background: #fff3cd; padding: 10px; border-left: 4px solid #ffc107; margin: 15px 0; }
+        .example { background: #d4edda; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .steps { background: #e7f3ff; padding: 15px; border-radius: 5px; margin: 15px 0; }
+        .important { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 דף בדיקה לתוסף AI Summarizer</h1>
+        
+        <div class="highlight">
+            <strong>מטרת דף זה:</strong> לבדוק את התכונות החדשות של התוסף - גרירה ושאלות ותשובות
+        </div>
+
+        <h2>🎯 כיצד לבדוק את התכונות החדשות</h2>
+        
+        <div class="steps">
+            <h3>צעד 1: בדיקת גרירה 🖱️</h3>
+            <ol>
+                <li>פתח את התוסף על ידי לחיצה על האייקון</li>
+                <li>לחץ והחזק על הכותרת (עם האייקון החדש) "AI Summarizer"</li>
+                <li>גרור את החלונית למקומות שונים על המסך</li>
+                <li>ודא שהחלונית זזה בצורה חלקה</li>
+            </ol>
+        </div>
+
+        <div class="steps">
+            <h3>צעד 2: בדיקת שאלות על הדף 🤔</h3>
+            <ol>
+                <li>פתח את התוסף</li>
+                <li>הקלד בשדה השאלות: "מה מטרת הדף הזה?"</li>
+                <li>לחץ על "שאל על הדף"</li>
+                <li>חכה לתשובה</li>
+            </ol>
+        </div>
+
+        <div class="steps">
+            <h3>צעד 3: בדיקת שאלות על טקסט מסומן ✂️</h3>
+            <ol>
+                <li>סמן את הטקסט במסגרת הירוקה למטה</li>
+                <li>פתח את התוסף</li>
+                <li>הקלד שאלה: "מה המידע החשוב כאן?"</li>
+                <li>לחץ על "שאל על הטקסט המסומן"</li>
+            </ol>
+        </div>
+
+        <h2>📚 תוכן לבדיקה</h2>
+        
+        <div class="example">
+            <h3>טקסט לסימון ושאלות:</h3>
+            <p>
+                בינה מלאכותית (AI) היא תחום טכנולוגי מתקדם שמטרתו ליצור מערכות מחשב 
+                היכולות לבצע משימות הדורשות בדרך כלל אינטליגנציה אנושית. כיום, בינה מלאכותית 
+                משמשת בתחומים רבים כמו רפואה, חינוך, תחבורה ובידור. מודלי שפה כמו AYA 
+                מסוגלים להבין ולייצר טקסט בשפות שונות, לסכם מאמרים ולענות על שאלות מורכבות.
+            </p>
+        </div>
+
+        <div class="example">
+            <h3>שאלות מוצעות לבדיקה:</h3>
+            <ul>
+                <li>"מה זה בינה מלאכותית?"</li>
+                <li>"באילו תחומים משתמשים ב-AI?"</li>
+                <li>"מה יכולות מודלי השפה?"</li>
+                <li>"מה המטרה של התוסף הזה?"</li>
+                <li>"תן לי דוגמא לשימוש ב-AI"</li>
+            </ul>
+        </div>
+
+        <h2>🔍 מה לבדוק</h2>
+        
+        <div class="important">
+            ודא שהתכונות הבאות עובדות:
+        </div>
+        
+        <ul>
+            <li>✅ החלונית זזה בצורה חלקה בעת גרירה</li>
+            <li>✅ השאלות על הדף מחזירות תשובות רלוונטיות</li>
+            <li>✅ השאלות על טקסט מסומן מתמקדות בטקסט הנבחר</li>
+            <li>✅ כפתור הסגירה (✕) עובד</li>
+            <li>✅ ההגדרות נשמרות</li>
+            <li>✅ הסיכום הרגיל עדיין עובד</li>
+        </ul>
+
+        <h2>🛠️ פתרון בעיות</h2>
+        
+        <div class="highlight">
+            <strong>אם משהו לא עובד:</strong>
+            <ol>
+                <li>ודא ש-LMStudio פועל על localhost:1234</li>
+                <li>ודא שיש מודל AYA טעון ב-LMStudio</li>
+                <li>בדוק את ההגדרות בתוסף (⚙️)</li>
+                <li>פתח את ה-Developer Tools (F12) ובדוק שגיאות</li>
+                <li>נסה לרענן את הדף ולפתוח את התוסף מחדש</li>
+            </ol>
+        </div>
+
+        <div class="example">
+            <h3>🎉 אם הכל עובד - מזל טוב!</h3>
+            <p>
+                התוסף שלך עכשיו כולל את כל התכונות המתקדמות:
+                סיכום, שאלות ותשובות, גרירה, וממשק משתמש נוח ומעוצב.
+                אתה יכול להשתמש בו כדי לסכם מאמרים, לשאול שאלות על תוכן, 
+                ולהזיז את החלונית למקום הנוח ביותר עבורך.
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; color: #7f8c8d;">
+            <p>דף בדיקה זה נוצר במיוחד לבדיקת התוסף AI Summarizer</p>
+            <p>תאריך: יוני 2025</p>
+        </div>
+    </div>
+</body>
+</html>

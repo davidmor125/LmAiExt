@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת תפריט צף - Better Me</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            direction: rtl;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-highlight {
+            background: rgba(255, 193, 7, 0.3);
+            border: 2px solid #ffc107;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .instruction-box {
+            background: rgba(40, 167, 69, 0.3);
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .demo-text {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+            font-size: 1.1em;
+            line-height: 1.8;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+        
+        .highlight-text {
+            background: rgba(255, 255, 0, 0.4);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .steps {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 25px 0;
+        }
+        
+        .steps ol {
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        
+        .steps li {
+            margin: 15px 0;
+            padding: 8px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .warning {
+            background: rgba(220, 53, 69, 0.3);
+            border: 2px solid #dc3545;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .success {
+            background: rgba(40, 167, 69, 0.3);
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .code-hint {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 בדיקת תפריט צף - Better Me</h1>
+        
+        <div class="feature-highlight">
+            ✨ <strong>תכונה חדשה:</strong> תפריט צף מעל טקסט מסומן
+        </div>
+          <div class="instruction-box">
+            <h2>📋 איך להשתמש:</h2>
+            <ol>
+                <li><strong>סמן טקסט</strong> בדף זה או בכל דף אחר</li>
+                <li><strong>תפריט צף</strong> יופיע מעל הטקסט המסומן</li>
+                <li><strong>לחץ על הכפתור</strong> "🤖 שאל Better Me"</li>
+                <li><strong>המודל ייפתח</strong> ריק, מוכן לשאלה שלך</li>
+            </ol>
+        </div>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <span class="icon">🎯</span>
+                <h3>תפריט צף</h3>
+                <p>מופיע אוטומטית מעל טקסט מסומן</p>
+            </div>
+              <div class="feature-card">
+                <span class="icon">🤖</span>
+                <h3>כפתור חכם</h3>
+                <p>פותח את המודל ריק, מוכן לכתיבת שאלה</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="icon">⚡</span>
+                <h3>מהיר ונוח</h3>
+                <p>גישה מהירה לשאלות על טקסט</p>
+            </div>
+            
+            <div class="feature-card">
+                <span class="icon">🎨</span>
+                <h3>עיצוב יפה</h3>
+                <p>אנימציות ועיצוב מותאם</p>
+            </div>
+        </div>
+        
+        <div class="demo-text">
+            <h2>📝 טקסט לבדיקה - נסה לסמן!</h2>
+            <p>
+                זהו <span class="highlight-text">טקסט לדוגמה</span> שניתן לסמן כדי לבדוק את התכונה החדשה של התפריט הצף. 
+                כאשר תסמן חלק מהטקסט הזה, יופיע תפריט צף עם כפתור "🤖 שאל Better Me" שיאפשר לך 
+                לשאול שאלות על הטקסט המסומן.
+            </p>
+            <p>
+                <strong>נסה לסמן את המשפט הזה:</strong> "בינה מלאכותית היא טכנולוגיה מתקדמת שמאפשרת למחשבים 
+                ללמוד ולבצע משימות שבדרך כלל דורשות אינטליגנציה אנושית."
+            </p>
+            <p>
+                ניתן גם לסמן ביטויים קצרים כמו <span class="highlight-text">"למידת מכונה"</span> או 
+                <span class="highlight-text">"עיבוד שפה טבעית"</span> ולשאול עליהם שאלות ספציפיות.
+            </p>
+            <p>
+                <em>טיפ:</em> התפריט יופיע רק כשמסמנים טקסט שמכיל לפחות תו אחד, ויעלם אוטומטית אחרי 5 שניות 
+                או כשלוחצים במקום אחר בדף.
+            </p>
+        </div>
+        
+        <div class="steps">
+            <h2>🧪 שלבי בדיקה מפורטים:</h2>
+            <ol>
+                <li><strong>טען את התוסף:</strong> ודא שהתוסף Better Me טעון ב-Chrome</li>
+                <li><strong>פתח את התוסף:</strong> לחץ על אייקון Better Me לפתיחת הבועה</li>
+                <li><strong>סמן טקסט:</strong> סמן כל טקסט בדף זה (או בדף אחר)</li>
+                <li><strong>חפש תפריט:</strong> התפריט צריך להופיע מעל הטקסט המסומן</li>
+                <li><strong>לחץ על הכפתור:</strong> "🤖 שאל Better Me"</li>
+                <li><strong>בדוק מודל:</strong> המודל צריך להיפתח ריק, מוכן לשאלה</li>
+                <li><strong>בדוק הסתרה:</strong> התפריט נעלם כשלוחצים במקום אחר</li>
+            </ol>
+        </div>
+        
+        <div class="code-hint">
+            <strong>💡 טיפים טכניים:</strong><br>
+            • התפריט יופיע רק על טקסט באורך של תו אחד לפחות<br>
+            • המיקום מותאם אוטומטית לגבולות המסך<br>
+            • התפריט נעלם בגלילה או בלחיצה במקום אחר<br>
+            • אנימציית כניסה ויציאה חלקה
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ שים לב:</strong> אם התפריט לא מופיע, ודא שהתוסף טעון נכון ושאין שגיאות ב-DevTools (F12)
+        </div>
+        
+        <div class="success">
+            <strong>✅ כל התכונות הקיימות ממשיכות לעבוד:</strong> הבועה הצפה, החלונית הניתנת להזזה, והכפתורים הרגילים
+        </div>
+        
+        <div class="demo-text">
+            <h2>📚 עוד טקסט לבדיקה:</h2>
+            <p>
+                JavaScript הוא שפת תכנות דינמית ורב-תכליתית שמשמשת בעיקר לפיתוח אפליקציות ווב. 
+                השפה פותחה במקור על ידי ברנדן אייך ב-1995 בחברת נטסקייפ, ומאז הפכה לאחת השפות 
+                הפופולריות והחשובות ביותר בעולם הפיתוח.
+            </p>
+            <p>
+                React הוא ספריית JavaScript שפותחה על ידי פייסבוק לבניית ממשקי משתמש אינטראקטיביים. 
+                הספרייה מבוססת על מושג הקומפוננטים, המאפשר לפתחים ליצור חלקי UI הניתנים לשימוש חוזר.
+            </p>
+            <p>
+                Node.js הוא סביבת הרצה של JavaScript שמאפשרת להריץ קוד JavaScript מחוץ לדפדפן, 
+                בעיקר בצד השרת. זה פתח אפשרויות חדשות לפיתוח אפליקציות full-stack עם שפה אחת.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 בדיקת תיקון כפתור הסיכום</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            direction: rtl;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        h1 {
+            color: #182857;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status {
+            background: #cce5ff;
+            color: #004085;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #b3d9ff;
+        }
+        .test-text {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ffc107;
+            margin: 20px 0;
+            user-select: text;
+            cursor: text;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .instruction {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 בדיקת תיקון כפתור הסיכום</h1>
+        
+        <div class="status">
+            <strong>📋 מה תוקן:</strong><br>
+            ✅ תיקון message passing בין content ו-background scripts<br>
+            ✅ הוספת לוגינג מפורט לאיתור בעיות<br>
+            ✅ שיפור error handling עם הודעות ברורות<br>
+            ✅ תיקון הגדרות כפתור בעת שגיאות
+        </div>
+
+        <div class="instruction">
+            <strong>🧪 כיצד לבדוק:</strong><br>
+            1. וודא שהתוסף Better Me מותקן<br>
+            2. פתח Developer Tools (F12)<br>
+            3. עבור לטאב Console<br>
+            4. סמן את הטקסט הצהוב למטה<br>
+            5. לחץ על כפתור "סכם" בתפריט הצף<br>
+            6. עקוב אחר ההודעות בקונסול
+        </div>
+
+        <div class="test-text">
+            🎯 טקסט לבדיקת הסיכום: בינה מלאכותית מהווה אחד מהתחומים המתפתחים ביותר בטכנולוגיה המודרנית. 
+            במהלך השנים האחרונות, אנו עדים לפריצות דרך משמעותיות בתחום הלמידה העמוקה ועיבוד שפה טבעית. 
+            טכנולוגיות אלו מאפשרות למחשבים לבצע משימות מורכבות שדרשו בעבר אינטליגנציה אנושית. 
+            כיום, בינה מלאכותית משמשת במגוון רחב של יישומים: מאבחון רפואי מתקדם ועד לרכבים אוטונומיים, 
+            מתרגום שפות ועד ליצירה אמנותית. עם זאת, חשוב לזכור שעלינו להתמודד עם אתגרים אתיים וחברתיים 
+            הנובעים מהשימוש הגובר בטכנולוגיות אלו, ולוודא שהפיתוח נעשה באופן אחראי ומקיים.
+        </div>
+
+        <div class="instruction">
+            <strong>🔍 מה לחפש בקונסול:</strong><br>
+            <div class="debug-info">
+                🎯 getSummaryForText called with text length: [מספר]<br>
+                📤 Message sent to background script<br>
+                🤖 processAIRequest started<br>
+                ⚙️ Getting settings from storage...<br>
+                🚀 Calling AI API...<br>
+                📥 Response status: [סטטוס]<br>
+                ✅ או ❌ [הודעת תוצאה]
+            </div>
+        </div>
+
+        <div class="status" id="test-status">
+            <strong>📊 סטטוס הבדיקה:</strong> ממתין לבדיקה...
+        </div>
+
+        <div class="instruction">
+            <strong>🛠️ פתרון בעיות:</strong><br>
+            • אם אין תפריט צף - וודא שהתוסף מותקן ופעיל<br>
+            • אם יש שגיאת חיבור - בדוק שה-AI שלך (LMStudio/Ollama) פועל<br>
+            • אם יש שגיאת API - בדוק הגדרות כתובת ה-API<br>
+            • אם אין תגובה - בדוק את הקונסול לשגיאות
+        </div>
+    </div>
+
+    <script>
+        console.log('🧪 דף בדיקת תיקון הסיכום נטען');
+        
+        // Monitor text selection
+        document.addEventListener('selectionchange', function() {
+            const selection = window.getSelection().toString().trim();
+            if (selection.length > 10) {
+                console.log('🎯 טקסט נבחר:', selection.substring(0, 50) + '...');
+                updateStatus('טקסט נבחר - מחפש תפריט קונטקסט...', '#007bff');
+            }
+        });
+        
+        // Monitor for Better Me extension
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                if (document.getElementById('betterme-bubble')) {
+                    console.log('✅ Better Me bubble נמצא - התוסף פעיל');
+                    updateStatus('✅ התוסף Better Me זוהה ופעיל', '#28a745');
+                } else {
+                    console.log('⚠️ לא נמצא Better Me bubble - בדוק שהתוסף מותקן');
+                    updateStatus('⚠️ לא זוהה תוסף Better Me - וודא שהוא מותקן ופעיל', '#ffc107');
+                }
+            }, 2000);
+        });
+        
+        // Monitor for context menu
+        setInterval(() => {
+            const menu = document.getElementById('betterme-context-menu');
+            if (menu && menu.style.display !== 'none') {
+                updateStatus('🎯 תפריט קונטקסט מופיע - לחץ על כפתור "סכם"', '#17a2b8');
+            }
+        }, 500);
+        
+        // Monitor for summary dialog
+        setInterval(() => {
+            const dialog = document.getElementById('betterme-quick-summary');
+            if (dialog) {
+                updateStatus('🔄 דיאלוג סיכום נפתח - מעבד בקשה...', '#6c757d');
+            }
+        }, 500);
+        
+        function updateStatus(message, color = '#6c757d') {
+            const statusElement = document.getElementById('test-status');
+            statusElement.innerHTML = `<strong>📊 סטטוס הבדיקה:</strong> ${message}`;
+            statusElement.style.borderColor = color;
+        }
+        
+        // Log console messages for debugging
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            if (args[0] && typeof args[0] === 'string') {
+                if (args[0].includes('getSummaryForText')) {
+                    updateStatus('🎯 פונקציית סיכום הופעלה', '#007bff');
+                } else if (args[0].includes('Message sent to background')) {
+                    updateStatus('📤 הודעה נשלחה לbackground script', '#28a745');
+                } else if (args[0].includes('AI response received')) {
+                    updateStatus('✅ תגובה התקבלה מה-AI בהצלחה!', '#28a745');
+                } else if (args[0].includes('processAIRequest started')) {
+                    updateStatus('🤖 מעבד בקשת AI...', '#17a2b8');
+                }
+            }
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            if (args[0] && typeof args[0] === 'string') {
+                if (args[0].includes('AI processing error')) {
+                    updateStatus('❌ שגיאה בעיבוד AI - בדוק הגדרות', '#dc3545');
+                } else if (args[0].includes('fetch')) {
+                    updateStatus('❌ שגיאת חיבור - וודא שה-AI פועל', '#dc3545');
+                }
+            }
+        };
+    </script>
+</body>
+</html>

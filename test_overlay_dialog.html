@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Better Me - בדיקת דיאלוג חלון</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #182857, #152247);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .test-instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #2196F3;
+            margin: 20px 0;
+        }
+        
+        .test-instructions h3 {
+            color: #1565C0;
+            margin-top: 0;
+        }
+        
+        .test-text {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #182857;
+            margin: 20px 0;
+        }
+        
+        .highlight-text {
+            background: linear-gradient(120deg, #a8e6cf 0%, #dcedc1 100%);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #4CAF50;
+            cursor: pointer;
+        }
+        
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #182857;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Better Me - בדיקת דיאלוג</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Better Me - בדיקת דיאלוג חלון</h1>
+            <p>בדיקה של הדיאלוג החדש שנפתח על הדף</p>
+        </div>
+
+        <div class="test-instructions">
+            <h3>🚀 הוראות בדיקה:</h3>
+            <ol>
+                <li><strong>לחץ על אייקון התוסף</strong> - אמור להופיע דיאלוג על הדף</li>
+                <li><strong>בדוק כפתור סגירה (✕)</strong> - אמור לסגור רק את הדיאלוג</li>
+                <li><strong>לחץ על הרקע</strong> - אמור גם לסגור את הדיאלוג</li>
+                <li><strong>לחץ על הלוגו</strong> - אמור לפתוח/לסגור הגדרות</li>
+                <li><strong>בדוק כפתורי סיכום</strong> - אמורים להגיב</li>
+                <li><strong>בדוק כפתורי שאלות</strong> - אמורים להגיב</li>
+            </ol>
+        </div>
+
+        <div class="test-text">
+            <h3>מאמר לדוגמה על בינה מלאכותית</h3>
+            <p>בינה מלאכותית (AI) היא אחד התחומים המתפתחים ביותר בטכנולוגיה המודרנית. היא כוללת פיתוח מערכות מחשב המסוגלות לבצע משימות הדורשות בדרך כלל אינטליגנציה אנושית, כגון למידה, הבנה, חשיבה ופתרון בעיות.</p>
+            
+            <p>השימושים של בינה מלאכותית רחבים ומגוונים: מעיבוד שפה טבעית ועד זיהוי תמונות, מרכבים אוטונומיים ועד מערכות המלצה מתקדמות. החיקויים המודרניים של AI מסוגלים לבצע משימות מורכבות כמו כתיבת טקסטים, יצירת תמונות, ואפילו פתרון בעיות מתמטיות מתקדמות.</p>
+        </div>
+
+        <div class="highlight-text" onclick="selectText(this)">
+            <strong>טקסט לבחירה:</strong> זהו טקסט מיוחד שניתן לסמן לבדיקת פונקציית הסיכום של טקסט נבחר. לחץ כאן כדי לסמן את הטקסט הזה אוטומטית.
+        </div>
+
+        <div class="test-text">
+            <h3>שאלות לדוגמה:</h3>
+            <ul>
+                <li>מה זה בינה מלאכותית?</li>
+                <li>איך בינה מלאכותית עוזרת בחיי היומיום?</li>
+                <li>מה ההבדל בין AI ללמידת מכונה?</li>
+                <li>מה הן דוגמאות לשימוש בבינה מלאכותית?</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #d4edda; border-radius: 10px;">
+            <h3 style="color: #155724; margin: 0;">✅ מוכן לבדיקה!</h3>
+            <p style="margin: 10px 0 0 0;">לחץ על אייקון Better Me כדי להתחיל</p>
+        </div>
+    </div>
+
+    <script>
+        function selectText(element) {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        // Check if extension is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.getElementById('status');
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                statusDiv.textContent = 'Better Me - Extension Ready ✅';
+                statusDiv.style.background = '#4CAF50';
+            } else {
+                statusDiv.textContent = 'Better Me - Extension Not Detected ❌';
+                statusDiv.style.background = '#f44336';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Better Me - בדיקת עיצוב מעודכן</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #182857, #152247);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .preview-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .logo-preview {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #182857, #152247);
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .logo-demo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            background: white;
+            color: #182857;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .field-demo {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .ltr-demo {
+            direction: ltr;
+            text-align: left;
+            background: white;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        
+        .test-instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #2196F3;
+            margin: 20px 0;
+        }
+        
+        .changes-list {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 15px;
+            border-radius: 8px;
+            color: #155724;
+            margin: 15px 0;
+        }
+        
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: #182857;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="status">Better Me - בדיקת עיצוב ✨</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>✨ Better Me - עדכון עיצוב</h1>
+            <p>בדיקת השינויים החדשים בעיצוב הדיאלוג</p>
+        </div>
+
+        <div class="changes-list">
+            <h3>🎨 השינויים שבוצעו:</h3>
+            <ul>
+                <li><strong>רקע הלוגו:</strong> עכשיו רקע לבן במקום שקוף</li>
+                <li><strong>שדה השאלה:</strong> משמאל לימין (LTR) במקום ימין לשמאל</li>
+                <li><strong>תוצאת השאלה:</strong> גם היא משמאל לימין (LTR)</li>
+                <li><strong>הודעות שגיאה:</strong> גם הן משמאל לימין (LTR)</li>
+            </ul>
+        </div>
+
+        <div class="preview-section">
+            <h3>🖼️ תצוגה מקדימה של הלוגו החדש:</h3>
+            <div class="logo-preview">
+                <div class="logo-demo">
+                    <img src="icons/chat_icon.png" style="width: 32px; height: 32px;" alt="Better Me Icon">
+                    Better Me
+                </div>
+                <p style="margin: 10px 0 0 0; font-size: 14px;">הלוגו עכשיו עם רקע לבן</p>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h3>📝 תצוגה מקדימה של שדה השאלה:</h3>
+            <div class="field-demo">
+                <label style="display: block; margin-bottom: 10px; font-weight: 600;">🤔 שאל שאלה על התוכן:</label>
+                <textarea class="ltr-demo" placeholder="Type your question here... (now LTR)">This is how the question field will look - left to right text direction</textarea>
+                <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">שדה השאלה עכשיו משמאל לימין</p>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h3>💬 תצוגה מקדימה של התוצאה:</h3>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #4CAF50; direction: ltr; text-align: left;">
+                <strong>💡 Answer:</strong><br>
+                This is how the answer will appear - in left-to-right direction for better readability of English text and mixed content.
+            </div>
+            <p style="margin: 10px 0 0 0; font-size: 14px; color: #666;">התוצאות עכשיו מוצגות משמאל לימין</p>
+        </div>
+
+        <div class="test-instructions">
+            <h3>🔍 הוראות בדיקה:</h3>
+            <ol>
+                <li><strong>לחץ על אייקון התוסף</strong> - יופיע הדיאלוג</li>
+                <li><strong>בדוק את הלוגו</strong> - אמור להיות עם רקע לבן</li>
+                <li><strong>הקלד שאלה</strong> - הטקסט אמור להיות משמאל לימין</li>
+                <li><strong>שלח שאלה</strong> - התשובה אמורה להיות משמאל לימין</li>
+                <li><strong>בדוק סיכום</strong> - גם הוא אמור להיות משמאל לימין</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #182857; color: white; border-radius: 10px;">
+            <h3 style="margin: 0;">🚀 מוכן לבדיקה!</h3>
+            <p style="margin: 10px 0 0 0;">לחץ על אייקון Better Me כדי לראות את השינויים</p>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 10px; border: 1px solid #ffeaa7;">
+            <h4 style="color: #856404; margin-top: 0;">🔧 שינויים טכניים:</h4>
+            <ul style="color: #856404;">
+                <li><strong>background.js:</strong> הוספתי <code>background: white</code> ללוגו</li>
+                <li><strong>background.js:</strong> הוספתי <code>direction: ltr; text-align: left</code> לשדה השאלה</li>
+                <li><strong>content.js:</strong> הוספתי <code>direction: ltr; text-align: left</code> לתוצאות</li>
+                <li><strong>content.js:</strong> עדכנתי גם את הודעות השגיאה להיות LTR</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Check if extension is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.querySelector('.status');
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                statusDiv.textContent = 'Better Me - Extension Ready ✅';
+                statusDiv.style.background = '#4CAF50';
+            } else {
+                statusDiv.textContent = 'Better Me - Extension Not Detected ❌';
+                statusDiv.style.background = '#f44336';
+            }
+        });
+    </script>
+</body>
+</html>

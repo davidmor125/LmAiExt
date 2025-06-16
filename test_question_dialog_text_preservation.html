@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת שמירת בחירת טקסט - דיאלוג שאלות</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        h1 {
+            color: #182857;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.8em;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #182857, #667eea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .test-scenario {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 3px solid #ffc107;
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-scenario::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        .test-scenario h3 {
+            color: #856404;
+            font-size: 1.5em;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .test-text {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px dashed #007bff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            font-size: 18px;
+            line-height: 1.8;
+            cursor: text;
+            user-select: text;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .test-text:hover {
+            border-color: #0056b3;
+            box-shadow: 0 5px 25px rgba(0,123,255,0.2);
+            transform: translateY(-2px);
+        }
+        .test-text.text-selected {
+            background: linear-gradient(135deg, #d4edda, #b3e5b3);
+            border-color: #28a745;
+            box-shadow: 0 8px 30px rgba(40,167,69,0.4);
+            animation: selectedPulse 2s infinite;
+        }
+        @keyframes selectedPulse {
+            0%, 100% { transform: scale(1) translateY(-2px); }
+            50% { transform: scale(1.02) translateY(-4px); }
+        }
+        .instruction-steps {
+            background: rgba(33, 150, 243, 0.1);
+            border: 2px solid #2196F3;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .step {
+            background: rgba(255, 255, 255, 0.8);
+            border-right: 5px solid #007bff;
+            padding: 18px 25px;
+            margin: 15px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .step:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+        }
+        .step strong {
+            color: #007bff;
+            font-size: 1.1em;
+        }
+        .status-bar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .selection-info {
+            font-weight: bold;
+            color: #182857;
+        }
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .test-btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+        }
+        .test-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,123,255,0.4);
+        }
+        .result-indicator {
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            font-size: 1.2em;
+        }
+        .result-indicator.success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+        .result-indicator.error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+        .result-indicator.info {
+            background: linear-gradient(135deg, #cce7ff, #99d3ff);
+            color: #004085;
+            border: 2px solid #007bff;
+        }
+        .highlight-text {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #856404;
+            display: inline-block;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div class="selection-info" id="selection-info">אין טקסט נבחר</div>
+        <div style="color: #6c757d;">Better Me Extension Test</div>
+    </div>
+
+    <div class="container">
+        <h1>🔧 בדיקת תיקון שמירת בחירת טקסט - דיאלוג שאלות</h1>
+        
+        <div class="instruction-steps">
+            <h3 style="color: #1565c0; margin-top: 0;">🎯 מטרת הבדיקה</h3>
+            <p style="font-size: 1.1em; line-height: 1.6;">
+                לוודא שכאשר בוחרים טקסט ופותחים את דיאלוג השאלות הראשי של Better Me, 
+                הטקסט הנבחר נשאר מסומן גם כשלוחצים על שדה הטקסט לכתיבת השאלה.
+            </p>
+        </div>
+
+        <div class="test-scenario">
+            <h3>🧪 תרחיש בדיקה 1: דיאלוג שאלות ראשי</h3>
+            
+            <div class="instruction-steps">
+                <div class="step">
+                    <strong>שלב 1:</strong> בחר חלק מהטקסט בקטע למטה
+                </div>
+                <div class="step">
+                    <strong>שלב 2:</strong> לחץ על כפתור "שאל Better Me" בתפריט הצף
+                </div>
+                <div class="step">
+                    <strong>שלב 3:</strong> וודא שהטקסט נשאר מסומן אחרי פתיחת הדיאלוג
+                </div>
+                <div class="step">
+                    <strong>שלב 4:</strong> לחץ על שדה הטקסט לכתיבת השאלה
+                </div>
+                <div class="step">
+                    <strong>שלב 5:</strong> וודא שהטקסט עדיין נשאר מסומן בדף!
+                </div>
+            </div>
+
+            <div class="test-text" id="main-dialog-text">
+                <strong>📝 טקסט לבדיקת דיאלוג השאלות הראשי:</strong><br><br>
+                זהו טקסט מיוחד לבדיקת הדיאלוג הראשי של Better Me. בחר חלק מהטקסט הזה ולחץ 
+                על כפתור "שאל Better Me" שיופיע בתפריט הצף. אחרי פתיחת הדיאלוג, נסה ללחוץ 
+                על שדה הטקסט לכתיבת השאלה.
+                
+                <br><br>
+                
+                <span class="highlight-text">בדיקה קריטית:</span> הטקסט צריך להישאר מסומן 
+                גם כשלוחצים על שדה הטקסט! זה התיקון החדש שביצענו.
+                
+                <br><br>
+                
+                אם הטקסט נשאר מסומן, המשמעות היא שהמשתמש יוכל לשאול שאלות על החלק 
+                הספציפי שבחר מהדף, ולא יאבד את הקשר הויזואלי לתוכן שעליו הוא שואל.
+            </div>
+
+            <div class="test-buttons">
+                <button class="test-btn" onclick="selectMainText()">בחר טקסט אוטומטית</button>
+                <button class="test-btn" onclick="clearSelection()">נקה בחירה</button>
+                <button class="test-btn" onclick="checkSelection()">בדוק בחירה נוכחית</button>
+            </div>
+        </div>
+
+        <div class="test-scenario">
+            <h3>🧪 תרחיש בדיקה 2: חלונית סיכום מהירה</h3>
+            
+            <div class="instruction-steps">
+                <div class="step">
+                    <strong>השוואה:</strong> בחר טקסט מהקטע למטה ולחץ על כפתור "סכם"
+                </div>
+                <div class="step">
+                    <strong>וודא:</strong> שגם בחלונית הסיכום הטקסט נשמר (זה כבר תוקן קודם)
+                </div>
+            </div>
+
+            <div class="test-text" id="summary-dialog-text">
+                <strong>📋 טקסט לבדיקת חלונית הסיכום:</strong><br><br>
+                זהו טקסט לבדיקת חלונית הסיכום המהירה. בחר חלק מהטקסט הזה ולחץ על כפתור "סכם" 
+                בתפריט הצף. הטקסט צריך להישאר מסומן גם אחרי פתיחת חלונית הסיכום.
+                
+                <br><br>
+                
+                תכונה זו כבר תוקנה בעבר ואמורה לעבוד תקין. השוו את ההתנהגות בין שתי החלוניות.
+            </div>
+        </div>
+
+        <div class="result-indicator success" id="success-indicator">
+            ✅ מצוין! הטקסט נשאר מסומן בכל התרחישים
+        </div>
+
+        <div class="result-indicator error" id="error-indicator">
+            ❌ בעיה: הטקסט לא נשאר מסומן כאשר לוחצים על שדה הטקסט
+        </div>
+
+        <div class="result-indicator info" id="info-indicator">
+            ℹ️ מחכה לבדיקה... בחר טקסט ונסה את התכונות
+        </div>
+
+        <div class="test-scenario">
+            <h3>🔍 פרטי הבדיקה הטכניים</h3>
+            <div style="background: rgba(0,0,0,0.05); padding: 20px; border-radius: 10px; font-family: monospace;">
+                <div><strong>טקסט נבחר:</strong> <span id="selected-text-info">אין</span></div>
+                <div><strong>אורך בחירה:</strong> <span id="selection-length">0</span> תווים</div>
+                <div><strong>דיאלוג פתוח:</strong> <span id="dialog-status">לא</span></div>
+                <div><strong>שדה טקסט פעיל:</strong> <span id="textarea-status">לא</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSelection = '';
+        let dialogOpen = false;
+        let textareaFocused = false;
+        
+        // Elements
+        const selectionInfo = document.getElementById('selection-info');
+        const selectedTextInfo = document.getElementById('selected-text-info');
+        const selectionLength = document.getElementById('selection-length');
+        const dialogStatus = document.getElementById('dialog-status');
+        const textareaStatus = document.getElementById('textarea-status');
+        const successIndicator = document.getElementById('success-indicator');
+        const errorIndicator = document.getElementById('error-indicator');
+        const infoIndicator = document.getElementById('info-indicator');
+        
+        function updateSelectionInfo() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            
+            currentSelection = selectedText;
+            
+            if (selectedText.length > 0) {
+                selectionInfo.textContent = `נבחרו ${selectedText.length} תווים`;
+                selectionInfo.style.color = '#28a745';
+                selectedTextInfo.textContent = selectedText.length > 50 
+                    ? selectedText.substring(0, 50) + '...' 
+                    : selectedText;
+                selectionLength.textContent = selectedText.length;
+                
+                // Highlight container
+                document.querySelectorAll('.test-text').forEach(el => el.classList.remove('text-selected'));
+                try {
+                    const range = selection.getRangeAt(0);
+                    const container = range.commonAncestorContainer;
+                    const element = container.nodeType === Node.TEXT_NODE ? container.parentElement : container;
+                    const testBox = element.closest('.test-text');
+                    if (testBox) {
+                        testBox.classList.add('text-selected');
+                    }
+                } catch (e) {
+                    console.log('Could not highlight container');
+                }
+            } else {
+                selectionInfo.textContent = 'אין טקסט נבחר';
+                selectionInfo.style.color = '#6c757d';
+                selectedTextInfo.textContent = 'אין';
+                selectionLength.textContent = '0';
+                document.querySelectorAll('.test-text').forEach(el => el.classList.remove('text-selected'));
+            }
+            
+            // Update test results
+            updateTestResults();
+        }
+        
+        function updateTestResults() {
+            const hasSelection = currentSelection.length > 0;
+            
+            if (dialogOpen && textareaFocused && hasSelection) {
+                // Success: text remains selected even when textarea is focused
+                successIndicator.style.display = 'block';
+                errorIndicator.style.display = 'none';
+                infoIndicator.style.display = 'none';
+                console.log('✅ SUCCESS: Text selection preserved while textarea is focused!');
+            } else if (dialogOpen && textareaFocused && !hasSelection) {
+                // Error: text selection was lost when textarea was focused
+                successIndicator.style.display = 'none';
+                errorIndicator.style.display = 'block';
+                infoIndicator.style.display = 'none';
+                console.log('❌ ERROR: Text selection lost when textarea was focused!');
+            } else if (!dialogOpen && !textareaFocused) {
+                // Info: waiting for test
+                successIndicator.style.display = 'none';
+                errorIndicator.style.display = 'none';
+                infoIndicator.style.display = 'block';
+            }
+        }
+        
+        // Monitor selection changes
+        document.addEventListener('selectionchange', updateSelectionInfo);
+        setInterval(updateSelectionInfo, 500);
+        
+        // Monitor Better Me dialogs
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        // Main dialog
+                        if (node.id === 'betterme-overlay' || 
+                            (node.querySelector && node.querySelector('#betterme-overlay'))) {
+                            dialogOpen = true;
+                            dialogStatus.textContent = 'כן - דיאלוג ראשי';
+                            console.log('🎯 Main Better Me dialog opened');
+                            
+                            // Monitor textarea focus
+                            setTimeout(() => {
+                                const textarea = document.getElementById('betterme-question');
+                                if (textarea) {
+                                    textarea.addEventListener('focus', () => {
+                                        textareaFocused = true;
+                                        textareaStatus.textContent = 'כן';
+                                        console.log('📝 Textarea focused - checking selection...');
+                                        setTimeout(updateSelectionInfo, 100);
+                                    });
+                                    
+                                    textarea.addEventListener('blur', () => {
+                                        textareaFocused = false;
+                                        textareaStatus.textContent = 'לא';
+                                        console.log('📝 Textarea blurred');
+                                    });
+                                }
+                            }, 100);
+                        }
+                        
+                        // Summary dialog
+                        if (node.id === 'betterme-quick-summary' || 
+                            (node.querySelector && node.querySelector('#betterme-quick-summary'))) {
+                            dialogOpen = true;
+                            dialogStatus.textContent = 'כן - סיכום מהיר';
+                            console.log('🎯 Summary dialog opened');
+                        }
+                    }
+                });
+                
+                mutation.removedNodes.forEach((node) => {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        if (node.id === 'betterme-overlay' || node.id === 'betterme-quick-summary') {
+                            dialogOpen = false;
+                            textareaFocused = false;
+                            dialogStatus.textContent = 'לא';
+                            textareaStatus.textContent = 'לא';
+                            console.log('🎯 Dialog closed');
+                        }
+                    }
+                });
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+        
+        // Helper functions
+        function selectMainText() {
+            const element = document.getElementById('main-dialog-text');
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            console.log('👆 Main text selected automatically');
+        }
+        
+        function clearSelection() {
+            window.getSelection().removeAllRanges();
+            console.log('🧹 Selection cleared');
+        }
+        
+        function checkSelection() {
+            updateSelectionInfo();
+            console.log('🔍 Selection checked manually');
+        }
+        
+        // Initialize
+        console.log('🧪 Better Me Text Selection Test - Question Dialog');
+        console.log('📋 Test for preserving text selection when clicking textarea');
+        
+        if (typeof chrome !== 'undefined' && chrome.runtime) {
+            console.log('✅ Better Me extension detected');
+            infoIndicator.innerHTML = 'ℹ️ תוסף Better Me זמין - בחר טקסט ונסה את הדיאלוג!';
+        } else {
+            console.log('❌ Better Me extension not detected');
+            infoIndicator.innerHTML = 'ℹ️ תוסף Better Me לא זמין - וודא שהתוסף מותקן ופעיל';
+        }
+        
+        updateSelectionInfo();
+    </script>
+</body>
+</html>

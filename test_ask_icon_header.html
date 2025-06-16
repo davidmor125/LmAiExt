@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת אייקון שאלה בכותרת</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .content {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            padding: 30px;
+            border-radius: 15px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .demo-dialog {
+            background: white;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90vw;
+            margin: 20px auto;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid #182857;
+        }
+        
+        .demo-header {
+            color: #18285f;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+        }
+        
+        .demo-content {
+            padding: 25px;
+        }
+        
+        .demo-button {
+            background: linear-gradient(135deg, #182857, #152247);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-button:hover {
+            background: linear-gradient(135deg, #2b407d, #1f3659);
+            transform: translateY(-2px);
+        }
+        
+        .instructions {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #fff;
+        }
+        
+        h1, h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>❓ בדיקת אייקון שאלה בכותרת</h1>
+        
+        <div class="instructions">
+            <strong>השינוי שבוצע:</strong><br>
+            • הוסף את אייקון ask.png ליד כותרת "שאל שאלה על התוכן"<br>
+            • האייקון מופיע בצד ימין של הכותרת<br>
+            • גודל האייקון: 20x20 פיקסלים<br>
+            • רווח של 8px בין האייקון לטקסט
+        </div>
+    </div>
+
+    <!-- Demo Dialog -->
+    <div class="demo-dialog">
+        <div class="demo-header">
+            <h1 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 24px; color: #182857;">
+                <span style="display: flex; align-items: center; gap: 8px;">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJDNi40NzcgMiAyIDYuNDc3IDIgMTJDMiAxNy41MjMgNi40NzcgMjIgMTIgMjJDMTcuNTIzIDIyIDIyIDE3LjUyMyAyMiAxMkMyMiA2LjQ3NyAxNy41MjMgMiAxMiAyWiIgZmlsbD0iIzE4Mjg1NyIvPgo8cGF0aCBkPSJNOCA5SDE2VjExSDhWOVoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik04IDEzSDE2VjE1SDhWMTNaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K" style="width: 32px; height: 32px;" alt="Better Me">
+                    Better Me
+                </span>
+            </h1>
+        </div>
+        
+        <div class="demo-content">
+            <!-- Demo of the updated question section -->
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <div style="direction: rtl;">
+                    <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 600; justify-content: flex-end;">
+                        <!-- Ask icon (using SVG for demo) -->
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2Z" fill="#182857"/>
+                            <path d="M12 6C9.79 6 8 7.79 8 10H10C10 8.9 10.9 8 12 8C13.1 8 14 8.9 14 10C14 12 11 11.75 11 15H13C13 12.75 16 12.5 16 10C16 7.79 14.21 6 12 6Z" fill="white"/>
+                            <circle cx="12" cy="17" r="1" fill="white"/>
+                        </svg>
+                        שאל שאלה על התוכן:
+                    </label>
+                </div>
+                
+                <textarea placeholder="הקלד כאן את השאלה שלך..." style="
+                    width: 100%;
+                    min-height: 80px;
+                    padding: 12px;
+                    border: 2px solid #e9ecef;
+                    border-radius: 6px;
+                    box-sizing: border-box;
+                    resize: vertical;
+                    direction: rtl;
+                    text-align: right;
+                    font-family: inherit;
+                "></textarea>
+                
+                <div style="display: flex; gap: 10px; margin-top: 12px;">
+                    <button style="
+                        flex: 1;
+                        background: #ffffff;
+                        color: #182857;
+                        padding: 12px 16px;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+                        transition: all 0.3s ease;
+                    ">שאל על הדף</button>
+                    
+                    <button style="
+                        flex: 1;
+                        background: #ffffff;
+                        color: #182857;
+                        padding: 12px 16px;
+                        border: none;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        font-weight: 600;
+                        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+                        transition: all 0.3s ease;
+                    ">שאל על הטקסט המסומן</button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; padding: 20px; background: #e9f7ef; border-radius: 8px;">
+                <h3 style="color: #27ae60; margin: 0 0 10px 0;">✅ האייקון נוסף בהצלחה!</h3>
+                <p style="color: #2d5016; margin: 0;">
+                    כעת יש אייקון שאלה ליד הכותרת "שאל שאלה על התוכן"<br>
+                    האייקון מיושר מצד ימין ונראה מקצועי ומזוהה
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('❓ בדיקת אייקון שאלה נטענה בהצלחה!');
+    </script>
+</body>
+</html>

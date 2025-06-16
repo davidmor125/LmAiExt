@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת תפריט צף עם כפתור סיכום - Better Me</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #182857;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        .demo-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #182857;
+        }
+        
+        .instruction {
+            background: rgba(24, 40, 87, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: 600;
+            color: #182857;
+        }
+        
+        .selectable-text {
+            background: rgba(255, 255, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px dashed #ffc107;
+            cursor: text;
+            user-select: text;
+        }
+        
+        .test-area {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            background: rgba(40, 167, 69, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            background: #182857;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .test-btn:hover {
+            background: #0d1730;
+            transform: translateY(-2px);
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+        
+        .status.success {
+            background: rgba(40, 167, 69, 0.2);
+            color: #155724;
+            border: 1px solid #28a745;
+        }
+        
+        .status.warning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+        
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 בדיקת תפריט צף עם כפתור סיכום</h1>
+        
+        <div class="instruction">
+            📍 <strong>המטרה:</strong> בדיקת התפריט הצף החדש עם כפתור "סכם" שמופיע כאשר בוחרים טקסט
+        </div>
+        
+        <div class="demo-section">
+            <h2>🧪 אזור בדיקה ראשי</h2>
+            <div class="instruction">
+                👆 <strong>בחר טקסט מהקטע הבא כדי לראות את התפריט הצף:</strong>
+            </div>
+            
+            <div class="selectable-text">
+                בינה מלאכותית (AI - Artificial Intelligence) היא תחום במדעי המחשב שעוסק בפיתוח מערכות מחשב המסוגלות לבצע משימות הדורשות בדרך כלל אינטליגנציה אנושית. זה כולל למידה, הבנה, פתרון בעיות, תפיסה חזותית ועיבוד שפה טבעית. המערכות הללו לומדות מנתונים ומשפרות את הביצועים שלהן לאורך זמן. הטכנולוגיה משמשת כיום במגוון רחב של יישומים, מרכבים אוטונומיים ועד המלצות בפלטפורמות דיגיטליות.
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2>📱 אזור בדיקה נוסף</h2>
+            <div class="selectable-text">
+                <strong>ביטקוין</strong> הוא מטבע קריפטוגרפי מבוזר שנוצר ב-2009 על ידי אדם או קבוצה בשם הבדוי סטושי נקמוטו. הוא פועל על טכנולוגיית הבלוקצ'יין, שהיא מסד נתונים מבוזר המתעד את כל העסקאות ברשת. <span class="highlight">הביטקוין מאפשר העברת כסף ללא צורך ברשות מרכזית כמו בנק</span>, ולכן נחשב למהפכה בעולם הפיננסי. הערך שלו משתנה בהתאם להיצע והביקוש בשוק.
+            </div>
+        </div>
+        
+        <div class="test-area">
+            <h3>🔍 מה אמור לקרות:</h3>
+            <ol>
+                <li>בחר טקסט מאחד האזורים הצהובים למעלה</li>
+                <li>צריך להופיע תפריט צף עם <strong>שני כפתורים</strong>:</li>
+                <ul>
+                    <li>🗨️ <code>שאל Better Me</code> - פותח את הדיאלוג הראשי</li>
+                    <li>🔢 <code>סכם</code> - פותח דיאלוג סיכום קטן</li>
+                </ul>
+                <li>התפריט צריך להופיע מעל הטקסט הנבחר</li>
+                <li>לחיצה על "סכם" צריכה לפתוח דיאלוג קטן עם סיכום מהיר</li>
+            </ol>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-btn" onclick="clearSelection()">🧹 נקה בחירה</button>
+            <button class="test-btn" onclick="selectSampleText()">📋 בחר טקסט לדוגמה</button>
+            <button class="test-btn" onclick="checkFloatingMenu()">🔍 בדוק תפריט צף</button>
+        </div>
+        
+        <div id="test-status"></div>
+        
+        <div class="demo-section">
+            <h3>🎨 תכונות החדשות:</h3>
+            <ul>
+                <li>✅ <strong>כפתור סיכום חדש</strong> - עם אייקון numbers.png</li>
+                <li>✅ <strong>דיאלוג סיכום מהיר</strong> - נפתח ליד הטקסט הנבחר</li>
+                <li>✅ <strong>מיקום דינמי</strong> - הדיאלוג מתמקם בהתאם למיקום הטקסט</li>
+                <li>✅ <strong>כפתור סגירה</strong> - אפשרות לסגור את הדיאלוג</li>
+                <li>✅ <strong>סגירה בלחיצה מחוץ לדיאלוג</strong></li>
+                <li>✅ <strong>אינטגרציה עם מערכת ה-AI הקיימת</strong></li>
+            </ul>
+        </div>
+        
+        <div class="instruction">
+            💡 <strong>לתשומת לב:</strong> הדיאלוג ינסה להתחבר למערכת ה-AI שהוגדרה בהגדרות התוסף (LMStudio/Ollama/וכו')
+        </div>
+    </div>
+
+    <script>
+        function clearSelection() {
+            if (window.getSelection) {
+                window.getSelection().removeAllRanges();
+            }
+            updateStatus('בחירה נוקתה', 'success');
+        }
+        
+        function selectSampleText() {
+            const selectableTexts = document.querySelectorAll('.selectable-text');
+            const firstText = selectableTexts[0];
+            
+            if (firstText) {
+                const range = document.createRange();
+                range.selectNodeContents(firstText);
+                
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                updateStatus('טקסט לדוגמה נבחר - צריך להופיע תפריט צף', 'success');
+                
+                // Check if floating menu appears
+                setTimeout(() => {
+                    checkFloatingMenu();
+                }, 500);
+            }
+        }
+        
+        function checkFloatingMenu() {
+            const selection = window.getSelection().toString().trim();
+            const floatingMenu = document.getElementById('betterme-context-menu');
+            
+            if (selection.length > 0) {
+                if (floatingMenu && floatingMenu.style.display !== 'none') {
+                    updateStatus('✅ תפריט צף מופיע! בדוק שיש שני כפתורים: "שאל Better Me" ו"סכם"', 'success');
+                } else {
+                    updateStatus('⚠️ יש טקסט נבחר אבל התפריט הצף לא מופיע - יתכן שהתוסף לא טעון', 'warning');
+                }
+            } else {
+                updateStatus('⚠️ לא נבחר טקסט - בחר קודם טקסט כדי לראות את התפריט', 'warning');
+            }
+        }
+        
+        function updateStatus(message, type) {
+            const statusDiv = document.getElementById('test-status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        // Listen for selection changes
+        document.addEventListener('selectionchange', function() {
+            const selection = window.getSelection().toString().trim();
+            if (selection.length > 0) {
+                setTimeout(() => {
+                    checkFloatingMenu();
+                }, 100);
+            }
+        });
+        
+        // Initial status
+        updateStatus('🚀 מוכן לבדיקה! בחר טקסט כדי להתחיל', 'success');
+    </script>
+</body>
+</html>

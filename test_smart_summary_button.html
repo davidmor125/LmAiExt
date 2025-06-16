@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת כפתור סיכום חכם - Better Me</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #ffeaa7);
+            background-size: 400% 400%;
+            animation: gradientShift 5s ease infinite;
+            min-height: 100vh;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .content {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .demo-button {
+            background: linear-gradient(135deg, #182857, #152247);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            text-shadow: none;
+        }
+        
+        .demo-button:hover {
+            background: linear-gradient(135deg, #2b407d, #1f3659);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+        
+        .feature-showcase {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .highlight {
+            background: rgba(255, 255, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .comparison {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        
+        .before, .after {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid rgba(255,255,255,0.3);
+            min-width: 200px;
+        }
+        
+        .before {
+            border-color: #ff6b6b;
+        }
+        
+        .after {
+            border-color: #4ecdc4;
+        }
+        
+        .selectable-text {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            cursor: text;
+            user-select: text;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .instructions {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px dashed rgba(255,255,255,0.4);
+        }
+        
+        .smart-button-demo {
+            background: linear-gradient(135deg, #182857, #152247);
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .smart-button-demo:hover {
+            background: linear-gradient(135deg, #2b407d, #1f3659);
+        }
+        
+        .icon {
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 3px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #182857;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>🧠 כפתור סיכום חכם - Better Me</h1>
+        
+        <div class="highlight">
+            <strong>✨ התכונה החדשה:</strong><br>
+            כפתור סיכום אחד וחכם שמזהה אוטומטית מה לסכם<br>
+            🎯 טקסט מסומן = סיכום הטקסט המסומן<br>
+            📄 ללא טקסט מסומן = סיכום כל הדף
+        </div>
+        
+        <div class="comparison">
+            <div class="before">
+                <h3>❌ לפני</h3>
+                <div style="display: flex; gap: 5px; flex-direction: column;">
+                    <button style="background: #182857; color: white; padding: 8px; border: none; border-radius: 5px; font-size: 12px;">סכם דף שלם</button>
+                    <button style="background: #182857; color: white; padding: 8px; border: none; border-radius: 5px; font-size: 12px;">סכם טקסט נבחר</button>
+                </div>
+                <small>שני כפתורים נפרדים</small>
+            </div>
+            <div class="after">
+                <h3>✅ אחרי</h3>
+                <button class="smart-button-demo" onclick="demoSmartButton()">
+                    <span class="icon">📄</span>
+                    <span id="demo-button-text">סכם את הדף</span>
+                </button>
+                <small>כפתור חכם אחד</small>
+            </div>
+        </div>
+        
+        <div class="feature-showcase">
+            <h2>🎯 איך זה עובד:</h2>
+            
+            <div class="instructions">
+                <h3>💡 הוראות שימוש:</h3>
+                <ol>
+                    <li><strong>בלי בחירה:</strong> הכפתור יציג "סכם את הדף" ויסכם את כל התוכן</li>
+                    <li><strong>עם בחירה:</strong> בחר טקסט למטה והכפתור יתעדכן ל"סכם טקסט נבחר"</li>
+                    <li><strong>דינמי:</strong> הכפתור מתעדכן בזמן אמת כשמוסיפים או מסירים בחירה</li>
+                </ol>
+            </div>
+            
+            <div class="selectable-text" onclick="selectText(this)">
+                <strong>🖱️ לחץ כאן לבחירת טקסט:</strong><br>
+                זהו טקסט לדוגמה שניתן לסמן. בינה מלאכותית (AI) היא תחום מרתק שמשנה את העולם. 
+                כאשר תסמן את הטקסט הזה, הכפתור למטה יתעדכן אוטומטית ויציג "סכם טקסט נבחר". 
+                אם תבטל את הסימון, הכפתור יחזור להציג "סכם את הדף". 
+                זוהי דוגמה לחכמה של התוסף Better Me החדש.
+            </div>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="smart-button-demo" onclick="demoSmartButton()">
+                    <span class="icon">📄</span>
+                    <span id="demo-button-text">סכם את הדף</span>
+                </button>
+            </div>
+            
+            <div style="text-align: center;">
+                <button onclick="clearSelection()" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; margin: 5px;">
+                    נקה בחירה
+                </button>
+                <button onclick="selectDemo()" style="background: rgba(255,255,255,0.2); color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; margin: 5px;">
+                    בחר טקסט דוגמה
+                </button>
+            </div>
+        </div>
+        
+        <div class="feature-showcase">
+            <h2>🚀 יתרונות הכפתור החכם:</h2>
+            <ul>
+                <li><strong>🎯 פשטות:</strong> כפתור אחד במקום שניים</li>
+                <li><strong>🧠 חכמה:</strong> מזהה אוטומטית מה המשתמש רוצה לסכם</li>
+                <li><strong>⚡ מהירות:</strong> אין צורך לחשוב איזה כפתור לבחור</li>
+                <li><strong>🔄 דינמי:</strong> מתעדכן בזמן אמת עם השינויים</li>
+                <li><strong>🎨 עיצוב נקי:</strong> ממשק פשוט ויעיל יותר</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin: 40px 0;">
+            <button class="demo-button" onclick="openSmartSummaryModal()">
+                הדגמת התוסף החכם 🧠
+            </button>
+        </div>
+    </div>
+
+    <!-- Smart Summary Modal -->
+    <div id="smart-summary-overlay" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: transparent;
+        z-index: 999999;
+        display: none;
+        align-items: flex-start;
+        justify-content: flex-end;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 20px;
+        box-sizing: border-box;
+    ">
+        <div id="smart-summary-dialog" style="
+            background: white;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 2px solid #182857;
+            position: relative;
+        ">
+            <div style="
+                color: #18285f;
+                padding: 20px;
+                position: relative;
+                border-bottom: 1px solid #e9ecef;
+                background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            ">
+                <button onclick="closeSmartSummaryModal()" style="
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    background: rgba(255, 255, 255, 0.9);
+                    border: none;
+                    border-radius: 50%;
+                    width: 32px;
+                    height: 32px;
+                    font-size: 18px;
+                    cursor: pointer;
+                    color: #182857;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                ">✕</button>
+                
+                <h1 style="margin: 0; display: flex; align-items: center; gap: 10px; font-size: 24px;">
+                    <span style="
+                        cursor: pointer;
+                        padding: 8px;
+                        border-radius: 8px;
+                        transition: background 0.3s;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        background: white;
+                    ">
+                        🧠 Better Me - כפתור חכם
+                    </span>
+                </h1>
+            </div>
+            
+            <div style="padding: 25px; max-height: 50vh; overflow-y: auto;">
+                <div style="margin-bottom: 15px;">
+                    <button id="modal-smart-button" class="smart-button-demo" onclick="handleSmartSummary()">
+                        <span class="icon">📄</span>
+                        <span id="modal-button-text">סכם את הדף</span>
+                    </button>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <div style="direction: rtl; text-align: right;">
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 600; justify-content: flex-start;">
+                            ❓ שאל שאלה על התוכן:
+                        </label>
+                    </div>
+                    <textarea id="smart-question" placeholder="הקלד כאן את השאלה שלך..." style="
+                        width: 100%;
+                        min-height: 80px;
+                        padding: 12px;
+                        border: 2px solid #e9ecef;
+                        border-radius: 6px;
+                        box-sizing: border-box;
+                        resize: vertical;
+                        direction: rtl;
+                        text-align: right;
+                    "></textarea>
+                    <div style="display: flex; gap: 10px; margin-top: 12px;">
+                        <button onclick="askAboutContent()" style="
+                            flex: 1;
+                            background: #ffffff;
+                            color: #182857;
+                            padding: 12px 16px;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            font-weight: 600;
+                            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+                            transition: all 0.3s ease;
+                        ">שאל על התוכן</button>
+                    </div>
+                </div>
+                
+                <div id="smart-result" style="
+                    min-height: 100px;
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                    padding: 15px;
+                    color: #666;
+                    text-align: center;
+                ">בחר טקסט או לחץ על כפתור הסיכום לתחילת העבודה</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update button text based on selection
+        function updateButtonText() {
+            const selection = window.getSelection();
+            const buttonText = document.getElementById('demo-button-text');
+            const modalButtonText = document.getElementById('modal-button-text');
+            
+            if (selection.toString().trim().length > 0) {
+                if (buttonText) buttonText.textContent = 'סכם טקסט נבחר';
+                if (modalButtonText) modalButtonText.textContent = 'סכם טקסט נבחר';
+            } else {
+                if (buttonText) buttonText.textContent = 'סכם את הדף';
+                if (modalButtonText) modalButtonText.textContent = 'סכם את הדף';
+            }
+        }
+        
+        // Listen to selection changes
+        document.addEventListener('selectionchange', updateButtonText);
+        
+        function selectText(element) {
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            updateButtonText();
+        }
+        
+        function clearSelection() {
+            window.getSelection().removeAllRanges();
+            updateButtonText();
+        }
+        
+        function selectDemo() {
+            const demoText = document.querySelector('.selectable-text');
+            selectText(demoText);
+        }
+        
+        function demoSmartButton() {
+            const selection = window.getSelection().toString().trim();
+            if (selection.length > 0) {
+                alert('🎯 הכפתור החכם זיהה טקסט מסומן!\n\nיסכם: "' + selection.substring(0, 50) + '..."');
+            } else {
+                alert('📄 הכפתור החכם לא מצא טקסט מסומן!\n\nיסכם את כל הדף');
+            }
+        }
+        
+        function openSmartSummaryModal() {
+            document.getElementById('smart-summary-overlay').style.display = 'flex';
+            updateButtonText();
+        }
+        
+        function closeSmartSummaryModal() {
+            document.getElementById('smart-summary-overlay').style.display = 'none';
+        }
+        
+        function handleSmartSummary() {
+            const selection = window.getSelection().toString().trim();
+            const resultDiv = document.getElementById('smart-result');
+            
+            if (selection.length > 0) {
+                resultDiv.innerHTML = `
+                    <div style="color: #182857; text-align: right;">
+                        <h4>🎯 מסכם טקסט נבחר:</h4>
+                        <div style="background: #e8f5e8; padding: 10px; border-radius: 5px; border-right: 3px solid #4caf50;">
+                            "${selection.substring(0, 100)}..."
+                        </div>
+                        <p style="color: #666; font-size: 14px;">✅ הכפתור החכם זיהה את הטקסט המסומן!</p>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div style="color: #182857; text-align: right;">
+                        <h4>📄 מסכם את כל הדף:</h4>
+                        <div style="background: #e3f2fd; padding: 10px; border-radius: 5px; border-right: 3px solid #2196f3;">
+                            זהו סיכום של כל תוכן הדף... הכפתור החכם פועל מעולה!
+                        </div>
+                        <p style="color: #666; font-size: 14px;">✅ לא נמצא טקסט מסומן - מסכם את כל הדף!</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function askAboutContent() {
+            const question = document.getElementById('smart-question').value.trim();
+            const resultDiv = document.getElementById('smart-result');
+            
+            if (!question) {
+                resultDiv.innerHTML = '<div style="color: #dc3545;">אנא הקלד שאלה</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = `
+                <div style="color: #182857; text-align: right;">
+                    <h4>❓ תשובה לשאלה:</h4>
+                    <div style="background: #fff3cd; padding: 10px; border-radius: 5px; border-right: 3px solid #ffc107;">
+                        <strong>שאלה:</strong> ${question}
+                    </div>
+                    <div style="background: #d4edda; padding: 10px; border-radius: 5px; border-right: 3px solid #28a745; margin-top: 10px;">
+                        זוהי תשובה דמה לשאלה שלך. בתוסף האמיתי, זה יופעל על ידי AI.
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('smart-question').value = '';
+        }
+        
+        // Close modal on backdrop click
+        document.getElementById('smart-summary-overlay').addEventListener('click', function(e) {
+            if (e.target.id === 'smart-summary-overlay') {
+                closeSmartSummaryModal();
+            }
+        });
+        
+        // ESC key to close
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSmartSummaryModal();
+            }
+        });
+    </script>
+</body>
+</html>
