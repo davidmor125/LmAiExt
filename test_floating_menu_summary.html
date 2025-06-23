@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת תפריט צף - Better Me</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #2c5282;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(44, 82, 130, 0.1);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            color: #2c5282;
+            border-radius: 10px;
+            border: 2px solid #2c5282;
+        }
+        
+        .feature-highlight {
+            background: #f7fafc;
+            border: 2px solid #2c5282;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .instructions {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            margin: 20px 0;
+        }
+        
+        .test-text {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+        
+        .selectable-text {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px dashed #2c5282;
+            cursor: text;
+            transition: all 0.2s;
+            user-select: text;
+        }
+        
+        .selectable-text:hover {
+            background: #edf2f7;
+            border-style: solid;
+        }
+        
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #2c5282;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 1000;
+            border: 2px solid #2c5282;
+        }
+        
+        .steps {
+            background: white;
+            border: 2px solid #2c5282;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .steps ol {
+            margin: 0;
+            padding-right: 20px;
+        }
+        
+        .steps li {
+            margin: 10px 0;
+            padding: 5px 0;
+        }
+        
+        .demo-section {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+        
+        .tip {
+            background: white;
+            border: 2px solid #4299e1;
+            color: #2c5282;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, #bee3f8 0%, #e6fffa 100%);
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-right: 4px solid #2c5282;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Better Me - תפריט צף</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Better Me - תפריט צף לסיכום טקסט</h1>
+            <p>תכונה חדשה: תפריט צף מעל טקסט מסומן עם אפשרות סיכום מיידי</p>
+        </div>
+
+        <div class="feature-highlight">
+            <h2>✨ תכונה חדשה: תפריט צף חכם</h2>
+            <p><strong>כאשר תסמן טקסט באתר, יופיע תפריט צף עם כפתור "סכם טקסט מסומן"</strong></p>
+            <p>לחיצה על הכפתור תפתח דיאלוג חדש שמציג את הטקסט המסומן ומסכם אותו עם AI</p>
+        </div>
+
+        <div class="steps">
+            <h3>📋 איך להשתמש בתפריט הצף:</h3>
+            <ol>
+                <li><strong>ודא שהתוסף פעיל:</strong> לחץ על אייקון Better Me כדי להפעיל את התוסף</li>
+                <li><strong>סמן טקסט:</strong> סמן כל טקסט בדף זה או בכל דף אחר</li>
+                <li><strong>חפש את התפריט:</strong> תפריט צף יופיע מעל הטקסט המסומן</li>
+                <li><strong>לחץ על הכפתור:</strong> "📄 סכם טקסט מסומן"</li>
+                <li><strong>המתן לתוצאות:</strong> יפתח דיאלוג חדש עם הסיכום</li>
+            </ol>
+        </div>
+
+        <div class="demo-section">
+            <h3>🧪 אזור בדיקה - סמן את הטקסטים הבאים:</h3>
+            
+            <div class="selectable-text">
+                <strong>טקסט קצר לבדיקה:</strong> בינה מלאכותית היא טכנולוגיה שמאפשרת למחשבים ללמוד ולבצע משימות שדורשות אינטליגנציה אנושית.
+            </div>
+
+            <div class="test-text">
+                <h4>מאמר ארוך יותר לסיכום:</h4>
+                <p>
+                    בינה מלאכותית (Artificial Intelligence - AI) היא אחד התחומים הטכנולוגיים המתפתחים ביותר בעולם המודרני. 
+                    התחום כולל פיתוח מערכות מחשב המסוגלות לבצע משימות הדורשות בדרך כלל אינטליגנציה אנושית, 
+                    כגון למידה, הבנה, חשיבה לוגית, פתרון בעיות, זיהוי דפוסים ועיבוד שפה טבעית.
+                </p>
+                <p>
+                    ההיסטוריה של הבינה המלאכותית מתחילה בשנות ה-50 של המאה ה-20, כאשר אלן טיורינג הציע את 
+                    "מבחן טיורינג" לבדיקת יכולת המחשב לחשוב כמו אדם. מאז, התחום עבר מהפכות רבות, החל מהמערכות 
+                    המוקדמות שהסתמכו על כללים מוגדרים מראש, וכלה במערכות הלמידה העמוקה של היום.
+                </p>
+                <p>
+                    כיום, הבינה המלאכותית נמצאת בכל מקום: במנועי החיפוש, ברשתות חברתיות, במערכות ניווט, 
+                    ברכבים אוטונומיים, במערכות המלצה, בעיבוד תמונות וקול, ובעוד תחומים רבים. השימושים 
+                    הפרקטיים כוללים אבחון רפואי, תחזיות מזג אויר, ניתוח שווקים פיננסיים, ואוטומציה תעשייתית.
+                </p>
+            </div>
+
+            <div class="selectable-text">
+                <strong>עוד טקסט לבדיקה:</strong> למידת מכונה (Machine Learning) היא תת-תחום של הבינה המלאכותית שמתמקד באלגוריתמים שיכולים ללמוד ולהשתפר מניסיון ללא תכנות ישיר.
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>🎨 תכונות התפריט הצף:</h3>
+            <ul>
+                <li><strong>מופיע אוטומטית:</strong> כאשר מסמנים טקסט (לפחות תו אחד)</li>
+                <li><strong>מיקום חכם:</strong> מתמקם מעל הטקסט המסומן ומתאים לגבולות המסך</li>
+                <li><strong>עיצוב נקי:</strong> רקע לבן עם גבול כחול בסגנון Better Me</li>
+                <li><strong>כפתור אחד:</strong> "📄 סכם טקסט מסומן" עם אפקט הובר</li>
+                <li><strong>נעלם אוטומטית:</strong> אחרי 5 שניות או בלחיצה במקום אחר</li>
+                <li><strong>דיאלוג מיידי:</strong> פותח דיאלוג חדש עם הטקסט והסיכום</li>
+            </ul>
+        </div>
+
+        <div class="highlight">
+            <h4>💡 טיפים לשימוש:</h4>
+            <ul>
+                <li>נסה לסמן קטעי טקסט בגדלים שונים</li>
+                <li>בדוק איך התפריט מתמקם בחלקים שונים של המסך</li>
+                <li>ודא שהדיאלוג מציג את הטקסט נכון</li>
+                <li>בדוק שהסיכום מתקבל מה-AI</li>
+            </ul>
+        </div>
+
+        <div class="tip">
+            <h3>⚠️ דרישות טכניות:</h3>
+            <ul>
+                <li>התוסף Better Me צריך להיות מותקן ופעיל</li>
+                <li>הגדרות ה-AI צריכות להיות מוגדרות נכון</li>
+                <li>שרת ה-AI (LMStudio/Ollama) צריך להיות פעיל</li>
+                <li>אינטרנט פעיל לקריאות ה-API</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: white; color: #2c5282; border-radius: 10px; border: 2px solid #2c5282;">
+            <h3 style="margin: 0;">🎯 תפריט צף מוכן לבדיקה!</h3>
+            <p style="margin: 10px 0 0 0;">סמן טקסט כלשהו בדף זה כדי לראות את התפריט הצף החדש</p>
+        </div>
+    </div>
+
+    <script>
+        // Check extension status
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.getElementById('status');
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                statusDiv.textContent = 'Better Me - תפריט צף פעיל ✅';
+                statusDiv.style.background = 'white';
+                statusDiv.style.color = '#2c5282';
+                statusDiv.style.borderColor = '#2c5282';
+            } else {
+                statusDiv.textContent = 'Better Me - Extension Not Detected ❌';
+                statusDiv.style.background = 'white';
+                statusDiv.style.color = '#e53e3e';
+                statusDiv.style.borderColor = '#e53e3e';
+            }
+        });
+
+        // Add visual feedback for text selection
+        document.addEventListener('mouseup', function() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            
+            if (selectedText.length > 0) {
+                console.log('✅ Text selected:', selectedText.substring(0, 50) + '...');
+                
+                // Visual feedback
+                setTimeout(() => {
+                    const floatingMenu = document.getElementById('betterme-floating-menu');
+                    if (floatingMenu && floatingMenu.style.display === 'block') {
+                        console.log('🎯 Floating menu is visible!');
+                    }
+                }, 200);
+            }
+        });
+    </script>
+</body>
+</html>

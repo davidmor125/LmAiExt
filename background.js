@@ -94,6 +94,19 @@ function initBetterMe() {
   
   console.log('✅ Better Me bubble created successfully');
   
+  // Add CSS animations for spinner if not already added
+  if (!document.getElementById('betterme-floating-animations')) {
+    const style = document.createElement('style');
+    style.id = 'betterme-floating-animations';
+    style.textContent = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
   // Listen for messages from background script
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'updateDialog') {
@@ -446,6 +459,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.action === 'summarize' || request.action === 'ask') {
     // Handle AI request from dialog
     handleAIRequest(request, sender);
+  } else if (request.action === 'summarizeSelectedText') {
+    // Handle floating menu summary request
+    handleFloatingMenuSummary(request, sender, sendResponse);
+    return true; // Keep message channel open for async response
   } else if (request.action === 'openSettings') {
     // Open extension popup for settings
     chrome.action.openPopup();
@@ -614,4 +631,106 @@ function sendDialogMessage(tabId, type, content, action = null, question = null)
     originalAction: action,
     question: question
   });
+}
+
+// Handle floating menu summary request
+async function handleFloatingMenuSummary(request, sender, sendResponse) {
+  try {
+    console.log('🎯 Handling floating menu summary request');
+    
+    if (!request.content || request.content.trim().length === 0) {
+      sendResponse({
+        success: false,
+        error: 'לא נמצא טקסט לסיכום'
+      });
+      return;
+    }
+    
+    // Get AI settings
+    chrome.storage.sync.get(['apiUrl', 'modelName', 'apiType', 'summaryLanguage'], async (settings) => {
+      try {
+        const result = await callAIForSummary(request.content, settings);
+        sendResponse({
+          success: true,
+          result: result
+        });
+      } catch (error) {
+        console.error('AI API Error for floating menu:', error);
+        sendResponse({
+          success: false,
+          error: 'שגיאה בקריאה למודל AI: ' + error.message
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Error handling floating menu summary:', error);
+    sendResponse({
+      success: false,
+      error: 'שגיאה כללית: ' + error.message
+    });
+  }
+}
+
+// Call AI API specifically for summary (simplified version)
+async function callAIForSummary(content, settings) {
+  const apiUrl = settings.apiUrl || 'http://localhost:1234/v1/chat/completions';
+  const modelName = settings.modelName || 'lmstudio-model';
+  const apiType = settings.apiType || 'lmstudio';
+  const summaryLanguage = settings.summaryLanguage || 'hebrew';
+  
+  if (!apiUrl) {
+    throw new Error('נא להזין כתובת API בהגדרות');
+  }
+  
+  const prompt = createSummaryPrompt(content, summaryLanguage);
+  
+  // Prepare request body based on API type
+  let requestBody;
+  if (apiType === 'ollama') {
+    requestBody = {
+      model: modelName,
+      messages: [{ role: "user", content: prompt }],
+      stream: false,
+      options: {
+        temperature: 0.7,
+        num_predict: 1000
+      }
+    };
+  } else {
+    requestBody = {
+      model: modelName,
+      messages: [{ role: "user", content: prompt }],
+      max_tokens: 1000,
+      temperature: 0.7,
+      stream: false
+    };
+  }
+  
+  console.log('🤖 Sending floating menu request to AI:', apiUrl);
+  
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestBody)
+  });
+  
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`שגיאת API: ${response.status} - ${response.statusText}`);
+  }
+  
+  const data = await response.json();
+  
+  // Handle different response formats
+  if (data.message && data.message.content) {
+    return data.message.content;
+  } else if (data.response) {
+    return data.response;
+  } else if (data.choices && data.choices[0] && data.choices[0].message) {
+    return data.choices[0].message.content;
+  } else {
+    throw new Error('פורמט תגובה לא צפוי מהמודל');
+  }
 }
