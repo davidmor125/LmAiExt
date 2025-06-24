@@ -296,50 +296,72 @@ function createFloatingMenu() {
   }
   
   floatingMenu = document.createElement('div');
-  floatingMenu.id = 'betterme-floating-menu';
-  floatingMenu.style.cssText = `
+  floatingMenu.id = 'betterme-floating-menu';  floatingMenu.style.cssText = `
     position: absolute;
     background: white;
-    border: 2px solid #2c5282;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(44, 82, 130, 0.15);
-    padding: 8px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 2px;
     z-index: 999999;
     display: none;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-size: 14px;
     direction: rtl;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   `;
-    // Create summary button
+  // Create summary button
   const summaryButton = document.createElement('button');
-  summaryButton.innerHTML = '📄 סכם טקסט מסומן';
-  summaryButton.style.cssText = `
+  summaryButton.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 8px; direction: rtl;">
+      <span>סכם טקסט מסומן</span>
+      <img src="${chrome.runtime.getURL('icons/chat_icon.png')}" style="width: 18px; height: 18px;" alt="Better Me">
+    </div>
+  `;summaryButton.style.cssText = `
     background: white;
-    color: #2c5282;
-    border: 1px solid #2c5282;
+    color: #1f295c;
+    border: none;
     padding: 8px 16px;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s ease;
+    font-weight: 500;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
     white-space: nowrap;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    position: relative;
+    overflow: hidden;
+    text-transform: none;
+    letter-spacing: 0.25px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   `;
-  
-  // Add hover effects
+    // Add Material Design hover and focus effects
   summaryButton.addEventListener('mouseenter', () => {
-    summaryButton.style.background = '#2c5282';
-    summaryButton.style.color = 'white';
+    summaryButton.style.background = '#e3f2fd';
+    summaryButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+    summaryButton.style.transform = 'translateY(-1px)';
   });
   
   summaryButton.addEventListener('mouseleave', () => {
     summaryButton.style.background = 'white';
-    summaryButton.style.color = '#2c5282';
-  });  // Add click handler
+    summaryButton.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+    summaryButton.style.transform = 'translateY(0)';
+  });
+  
+  summaryButton.addEventListener('mousedown', () => {
+    summaryButton.style.transform = 'translateY(0)';
+    summaryButton.style.boxShadow = '0 1px 2px rgba(0, 0, 0, 0.2)';
+  });
+  
+  summaryButton.addEventListener('mouseup', () => {
+    summaryButton.style.transform = 'translateY(-1px)';
+    summaryButton.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+  });// Add click handler
   summaryButton.addEventListener('click', (e) => {
     console.log('🔥 Floating menu button clicked!');
     console.log('🔥 Event object:', e);
@@ -694,26 +716,38 @@ function openSummaryDialog(selectedText) {
   `;
   
   // Create dialog content
-  dialog.innerHTML = `
-    <div style="background: white; color: #2c5282; padding: 20px; position: relative; border-bottom: 2px solid #e2e8f0;">
-      <button id="betterme-summary-close" style="position: absolute; top: 15px; left: 15px; background: none; border: none; color: #2c5282; font-size: 24px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s;">✕</button>
-      <div style="margin-right: 45px;">
-        <h2 style="margin: 0; font-size: 24px; color: #2c5282;">📄 סיכום טקסט מסומן</h2>
-        <p style="margin: 5px 0 0 0; color: #4a5568; font-size: 14px;">Better Me מסכם עבורך את הטקסט שבחרת</p>
+  dialog.innerHTML = `    <div style="background: white; color: #1f295c; padding: 20px; position: relative; border-bottom: 2px solid #e2e8f0;">
+      <button id="betterme-summary-close" style="position: absolute; top: 15px; left: 15px; background: none; border: none; color: #1f295c; font-size: 24px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s;">✕</button>
+      
+      <!-- Logo section - absolute positioned to far right -->
+      <div style="position: absolute; top: 15px; right: 15px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <img src="${chrome.runtime.getURL('icons/chat_icon.png')}" style="width: 32px; height: 32px;" alt="Better Me">
+          <span style="font-size: 16px; font-weight: bold; color: #1f295c;">BETTER ME</span>
+        </div>
+      </div>
+      
+      <div style="margin: 40px 0 0 0;">
+        <!-- Centered title section -->
+        <div style="text-align: center;">
+          <h2 style="margin: 0; font-size: 24px; color: #1f295c;">סיכום טקסט מסומן</h2>
+        </div>
+        
+        <p style="margin: 10px 0 0 0; color: #4a5568; font-size: 14px; text-align: center;">Better Me מסכם עבורך את הטקסט שבחרת</p>
       </div>
     </div>
     
     <div style="padding: 30px;">
       <div style="margin-bottom: 20px;">
-        <h3 style="color: #2c5282; margin: 0 0 10px 0;">הטקסט המסומן:</h3>
-        <div style="background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; max-height: 150px; overflow-y: auto; font-size: 14px; line-height: 1.6; color: #2c5282;" id="selected-text-display"></div>
+        <h3 style="color: #1f295c; margin: 0 0 10px 0;">הטקסט המסומן:</h3>
+        <div style="background: #f7fafc; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; max-height: 150px; overflow-y: auto; font-size: 14px; line-height: 1.6; color: #1f295c;" id="selected-text-display"></div>
       </div>
       
       <div style="margin-bottom: 20px;">
-        <h3 style="color: #2c5282; margin: 0 0 10px 0;">סיכום:</h3>
+        <h3 style="color: #1f295c; margin: 0 0 10px 0;">סיכום:</h3>
         <div id="betterme-summary-result" style="background: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; min-height: 100px; display: flex; align-items: center; justify-content: center; color: #4a5568; font-style: italic;">
-          <div style="display: flex; align-items: center; gap: 10px; color: #2c5282;">
-            <div style="width: 20px; height: 20px; border: 2px solid #2c5282; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <div style="display: flex; align-items: center; gap: 10px; color: #1f295c;">
+            <div style="width: 20px; height: 20px;  border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
             מסכם את הטקסט עם AI...
           </div>
         </div>
@@ -854,7 +888,7 @@ function showSummaryResult(summary) {
   if (!resultDiv) return;
   
   resultDiv.innerHTML = `
-    <div style="background: white; border: 2px solid #2c5282; padding: 15px; border-radius: 8px; color: #2c5282; text-align: right; line-height: 1.6;">
+    <div style="background: white;  padding: 15px; border-radius: 8px; color: #1f295c; text-align: right; line-height: 1.6;">
       ${summary.replace(/\n/g, '<br>')}
     </div>
   `;

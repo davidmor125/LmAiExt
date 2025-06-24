@@ -49,19 +49,20 @@ function initBetterMe() {
   }
   
   console.log('🚀 Better Me initializing...');
-    // Create floating bubble button
+  
+  // Create floating bubble button
   const bubble = document.createElement('div');
   bubble.id = 'betterme-bubble';
   bubble.innerHTML = `
-    <span style="font-size: 24px; font-weight: bold; color: #2c5282;">BM</span>
-  `;bubble.style.cssText = `
+    <img src="${chrome.runtime.getURL('icons/chat_icon.png')}" style="width: 53px; height: 52px;" alt="Better Me">
+  `;  bubble.style.cssText = `
     position: fixed;
     bottom: 20px;
     right: 20px;
     width: 48px;
     height: 48px;
     background: white;
-    border: 2px solid #2c5282;
+    border: 2px solid #1f295c;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -75,7 +76,7 @@ function initBetterMe() {
   bubble.addEventListener('mouseenter', function() {
     this.style.transform = 'scale(1.1)';
     this.style.boxShadow = '0 6px 25px rgba(44, 82, 130, 0.3)';
-    this.style.background = '#2c5282';
+    this.style.background = '#1f295c';
   });
   
   bubble.addEventListener('mouseleave', function() {
@@ -120,20 +121,20 @@ function initBetterMe() {
     if (!resultDiv) return;
       if (request.type === 'error') {
       resultDiv.innerHTML = `
-        <div style="background: white; border: 2px solid #e53e3e; padding: 15px; border-radius: 8px; color: #e53e3e; text-align: right;">
+        <div style="background: white; border: 2px solid #e53e3e; border-radius: 8px; color: #e53e3e; text-align: right;">
           ❌ ${request.content}
         </div>
       `;
     } else if (request.type === 'result') {
-      let html = '<div style="background: white; border: 2px solid #2c5282; padding: 15px; border-radius: 8px; color: #2c5282; text-align: right; line-height: 1.6;">';
+      let html = '<div style="background: white; border-radius: 8px; color: #1f295c; text-align: right; line-height: 1.6;">';
       
       if (request.originalAction === 'ask' && request.question) {
-        html += `<div style="background: #f7fafc; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-right: 3px solid #2c5282;">`;
-        html += `<strong style="color: #2c5282;">שאלה:</strong><br>${request.question.replace(/\n/g, '<br>')}`;
+        html += `<div style="background: #f7fafc; padding: 10px; border-radius: 6px; margin-bottom: 15px; border-right: 3px solid #1f295c;">`;
+        html += `<strong style="color: #1f295c;">שאלה:</strong><br>${request.question.replace(/\n/g, '<br>')}`;
         html += `</div>`;
-        html += `<strong style="color: #2c5282;">תשובה:</strong><br>`;
+        html += `<strong style="color: #1f295c;">תשובה:</strong><br>`;
       } else {
-        html += `<strong style="color: #2c5282;">סיכום:</strong><br>`;
+        html += `<strong style="color: #1f295c;">סיכום:</strong><br>`;
       }
       
       html += `${request.content.replace(/\n/g, '<br>')}</div>`;
@@ -179,45 +180,36 @@ function initBetterMe() {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     `;
       // Create dialog content
-    dialog.innerHTML = `      <div style="background: white; color: #2c5282; padding: 20px; position: relative; border-bottom: 2px solid #e2e8f0;">
-        <button id="betterme-close" style="position: absolute; top: 15px; left: 15px; background: none; border: none; color: #2c5282; font-size: 24px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s;">✕</button>
-        <div style="display: flex; align-items: center; gap: 15px; margin-right: 45px;">
-          <div style="width: 40px; height: 40px; background: #2c5282; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">BM</div>
+    dialog.innerHTML = `
+      <div style="background: white; color: #1f295c; padding: 20px; position: relative; border-bottom: 2px solid #e2e8f0;">
+        <button id="betterme-close" style="position: absolute; top: 15px; left: 15px; background: none; border: none; color: #1f295c; font-size: 24px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s;">✕</button>        <div style="display: flex; align-items: center; gap: 15px;">
+          <img src="${chrome.runtime.getURL('icons/chat_icon.png')}" style="width: 40px; height: 40px; cursor: pointer;" alt="Better Me" id="betterme-logo-settings">
           <div>
-            <h2 style="margin: 0; font-size: 24px; color: #2c5282;">Better Me</h2>
+            <h2 style="margin: 0; font-size: 24px; color: #1f295c;">Better Me</h2>
             <p style="margin: 5px 0 0 0; color: #4a5568; font-size: 14px;">עוזר AI חכם לסיכום ושאלות</p>
           </div>
         </div>
       </div>
         <div style="padding: 30px;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-          <button id="betterme-summarize-page" style="background: white; color: #2c5282; border: 2px solid #2c5282; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
-            📄 סכם את הדף
-          </button>
-          <button id="betterme-summarize-selection" style="background: white; color: #2c5282; border: 2px solid #2c5282; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
-            🔤 סכם טקסט נבחר
-          </button>
-          <button id="betterme-ask-page" style="background: white; color: #2c5282; border: 2px solid #2c5282; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
-            ❓ שאל על הדף
-          </button>
-          <button id="betterme-ask-selection" style="background: white; color: #2c5282; border: 2px solid #2c5282; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
-            💬 שאל על הטקסט
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">          <button id="betterme-summarize-page" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;background: white; color: #1f295c; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
+            סכם את הדף
+          </button>          <button id="betterme-summarize-selection" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;background: white; color: #1f295c; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
+            סכם טקסט נבחר
+          </button>          <button id="betterme-ask-page" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;background: white; color: #1f295c; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
+            שאל על הדף
+          </button>          <button id="betterme-ask-selection" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;background: white; color: #1f295c; border: none; padding: 15px; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; transition: all 0.2s;">
+            שאל על הטקסט
           </button>
         </div>
           <div id="betterme-question-area" style="display: none; margin-bottom: 20px;">
-          <textarea id="betterme-question-input" placeholder="כתוב את השאלה שלך כאן..." style="width: 100%; height: 80px; padding: 12px; border: 2px solid #2c5282; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; direction: rtl; color: #2c5282;"></textarea>
+          <textarea id="betterme-question-input" placeholder="כתוב את השאלה שלך כאן..." style="width: 94%; height: 80px; padding: 12px; border: 2px solid #1f295c; border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; direction: rtl; color: #1f295c;"></textarea>
           <div style="margin-top: 10px; text-align: left;">
-            <button id="betterme-send-question" style="background: #2c5282; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-left: 10px;">שלח שאלה</button>
-            <button id="betterme-cancel-question" style="background: white; color: #2c5282; border: 2px solid #e2e8f0; padding: 10px 20px; border-radius: 6px; cursor: pointer;">ביטול</button>
+            <button id="betterme-send-question" style="background: #1f295c; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-left: 10px;">שלח שאלה</button>
+            <button id="betterme-cancel-question" style="background: white; color: #1f295c; border: 2px solid #e2e8f0; padding: 10px 20px; border-radius: 6px; cursor: pointer;">ביטול</button>
           </div>
-        </div>
-          <div id="betterme-result" style="background: white; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; min-height: 50px; display: flex; align-items: center; justify-content: center; color: #4a5568; font-style: italic;">
+        </div>          <div id="betterme-result" style="background: white; border: none; border-radius: 8px; padding: 15px; min-height: 50px; display: flex; align-items: center; justify-content: center; color: #4a5568; font-style: italic;">
           לחץ על אחד מהכפתורים למעלה כדי להתחיל
         </div>
-      </div>
-      
-      <div style="padding: 15px 30px; background: white; border-top: 2px solid #e2e8f0; text-align: center;">
-        <button id="betterme-settings" style="background: white; border: 2px solid #e2e8f0; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: #2c5282; font-size: 14px;">הגדרות</button>
       </div>
     `;
     
@@ -284,43 +276,53 @@ function initBetterMe() {
     
     // Question area buttons
     dialog.querySelector('#betterme-send-question').addEventListener('click', () => {
-      sendQuestion();
-    });
+      sendQuestion();    });
     
     dialog.querySelector('#betterme-cancel-question').addEventListener('click', () => {
       hideQuestionArea();
     });
-    
-    // Settings button
-    dialog.querySelector('#betterme-settings').addEventListener('click', () => {
+      // Logo click for settings
+    dialog.querySelector('#betterme-logo-settings').addEventListener('click', () => {
+      console.log('🔧 Logo clicked, sending settings message...');
       // Open extension popup for settings
       chrome.runtime.sendMessage({action: 'openSettings'});
     });
-      // Button hover effects
+    
+    // Logo hover effect
+    const logoSettings = dialog.querySelector('#betterme-logo-settings');
+    logoSettings.addEventListener('mouseenter', () => {
+      logoSettings.style.opacity = '0.7';
+      logoSettings.style.transform = 'scale(1.1)';
+      logoSettings.style.transition = 'all 0.2s ease';
+    });
+    logoSettings.addEventListener('mouseleave', () => {
+      logoSettings.style.opacity = '1';
+      logoSettings.style.transform = 'scale(1)';
+    });      // Button hover effects
     const buttons = dialog.querySelectorAll('button[id^="betterme-"]');
     buttons.forEach(button => {
       if (button.id !== 'betterme-close') {
         button.addEventListener('mouseenter', () => {
           if (button.id === 'betterme-send-question') {
             button.style.background = '#1a365d';
-          } else if (button.id === 'betterme-cancel-question' || button.id === 'betterme-settings') {
+          } else if (button.id === 'betterme-cancel-question') {
             button.style.background = '#f7fafc';
-            button.style.borderColor = '#2c5282';
+            button.style.borderColor = '#1f295c';
           } else {
-            button.style.background = '#2c5282';
+            button.style.background = '#1f295c';
             button.style.color = 'white';
           }
           button.style.transform = 'translateY(-2px)';
         });
         button.addEventListener('mouseleave', () => {
           if (button.id === 'betterme-send-question') {
-            button.style.background = '#2c5282';
-          } else if (button.id === 'betterme-cancel-question' || button.id === 'betterme-settings') {
+            button.style.background = '#1f295c';
+          } else if (button.id === 'betterme-cancel-question') {
             button.style.background = 'white';
             button.style.borderColor = '#e2e8f0';
           } else {
             button.style.background = 'white';
-            button.style.color = '#2c5282';
+            button.style.color = '#1f295c';
           }
           button.style.transform = 'translateY(0)';
         });
@@ -369,8 +371,8 @@ function initBetterMe() {
   // Handle summarize action
   function handleSummarize(type) {
     const resultDiv = document.getElementById('betterme-result');    resultDiv.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 10px; color: #2c5282;">
-        <div style="width: 20px; height: 20px; border: 2px solid #2c5282; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <div style="display: flex; align-items: center; gap: 10px; color: #1f295c;">
+        <div style="width: 20px; height: 20px; border: 2px solid #1f295c; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
         מסכם עם AI...
       </div>
     `;
@@ -407,8 +409,8 @@ function initBetterMe() {
     }
     
     const resultDiv = document.getElementById('betterme-result');    resultDiv.innerHTML = `
-      <div style="display: flex; align-items: center; gap: 10px; color: #2c5282;">
-        <div style="width: 20px; height: 20px; border: 2px solid #2c5282; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <div style="display: flex; align-items: center; gap: 10px; color: #1f295c;">
+        <div style="width: 20px; height: 20px; border: 2px solid #1f295c; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
         מחפש תשובה...
       </div>
     `;
@@ -460,10 +462,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.action === 'summarizeSelectedText') {
     // Handle floating menu summary request
     handleFloatingMenuSummary(request, sender, sendResponse);
-    return true; // Keep message channel open for async response
-  } else if (request.action === 'openSettings') {
-    // Open extension popup for settings
-    chrome.action.openPopup();
+    return true; // Keep message channel open for async response  } else if (request.action === 'openSettings') {
+    // Open extension settings page
+    console.log('🔧 Opening settings page...');
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('popup.html')
+    });
   }
   return true;
 });

@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (isVisible) {
       settingsSection.classList.remove('show');
-      document.getElementById('settingsToggle').textContent = 'הגדרות';
+      document.getElementById('settingsToggle').textContent = '⚙️ הגדרות';
     } else {
       settingsSection.classList.add('show');
       document.getElementById('settingsToggle').textContent = '✕ סגור הגדרות';
