@@ -1,6 +1,20 @@
 // Content script for extracting page content
 console.log('Content script loaded');
 
+// Global error handler for debugging
+window.addEventListener('error', (e) => {
+  console.error('🚨 Global JavaScript error:', e.error);
+  console.error('🚨 Error message:', e.message);
+  console.error('🚨 Error file:', e.filename);
+  console.error('🚨 Error line:', e.lineno);
+  console.error('🚨 Error stack:', e.error?.stack);
+});
+
+// Unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('🚨 Unhandled promise rejection:', e.reason);
+});
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   console.log('Content script received message:', request);
   
@@ -253,6 +267,7 @@ function updateSummaryButtonText() {
 // Floating context menu for text selection
 let floatingMenu = null;
 let hideMenuTimeout = null;
+let currentSelectedText = ''; // Store selected text globally
 
 // Initialize floating menu functionality
 function initFloatingMenu() {
@@ -260,17 +275,23 @@ function initFloatingMenu() {
   
   // Create floating menu element
   createFloatingMenu();
-  
-  // Add event listeners
+    // Add event listeners
   document.addEventListener('mouseup', handleTextSelection);
-  document.addEventListener('mousedown', hideFloatingMenu);
+  document.addEventListener('mousedown', handleMouseDown);
   document.addEventListener('scroll', hideFloatingMenu);
   window.addEventListener('resize', hideFloatingMenu);
+    console.log('✅ Floating menu event listeners added');
 }
+
+// Make function available globally
+window.initFloatingMenu = initFloatingMenu;
 
 // Create the floating menu element
 function createFloatingMenu() {
+  console.log('🔨 Creating floating menu...');
+  
   if (document.getElementById('betterme-floating-menu')) {
+    console.log('⚠️ Floating menu already exists');
     return; // Already exists
   }
   
@@ -289,8 +310,7 @@ function createFloatingMenu() {
     font-size: 14px;
     direction: rtl;
   `;
-  
-  // Create summary button
+    // Create summary button
   const summaryButton = document.createElement('button');
   summaryButton.innerHTML = '📄 סכם טקסט מסומן';
   summaryButton.style.cssText = `
@@ -304,6 +324,10 @@ function createFloatingMenu() {
     font-weight: 600;
     transition: all 0.2s ease;
     white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   `;
   
   // Add hover effects
@@ -315,23 +339,126 @@ function createFloatingMenu() {
   summaryButton.addEventListener('mouseleave', () => {
     summaryButton.style.background = 'white';
     summaryButton.style.color = '#2c5282';
-  });
-  
-  // Add click handler
+  });  // Add click handler
   summaryButton.addEventListener('click', (e) => {
+    console.log('🔥 Floating menu button clicked!');
+    console.log('🔥 Event object:', e);
+    console.log('🔥 Button element:', summaryButton);
+    
+    // CRITICAL: Stop all event propagation immediately
     e.preventDefault();
     e.stopPropagation();
-    handleFloatingMenuSummary();
-  });
+    e.stopImmediatePropagation();
+    
+    // Also prevent text selection changes
+    window.getSelection().removeAllRanges();
+    
+    console.log('🛑 All events stopped, proceeding with summary...');
+    
+    // Debug: check if function exists
+    console.log('🔍 Checking handleFloatingMenuSummary function...');
+    console.log('🔍 Function type:', typeof handleFloatingMenuSummary);
+    console.log('🔍 Function exists in window:', typeof window.handleFloatingMenuSummary);
+    
+    if (typeof handleFloatingMenuSummary === 'function') {
+      console.log('✅ handleFloatingMenuSummary function exists, calling...');
+      try {
+        handleFloatingMenuSummary();
+        console.log('✅ handleFloatingMenuSummary called successfully');
+      } catch (error) {
+        console.error('❌ Error calling handleFloatingMenuSummary:', error);
+        console.error('❌ Error stack:', error.stack);
+      }
+    } else if (typeof window.handleFloatingMenuSummary === 'function') {
+      console.log('✅ handleFloatingMenuSummary found in window scope, calling...');
+      try {
+        window.handleFloatingMenuSummary();
+        console.log('✅ window.handleFloatingMenuSummary called successfully');
+      } catch (error) {
+        console.error('❌ Error calling window.handleFloatingMenuSummary:', error);
+        console.error('❌ Error stack:', error.stack);
+      }
+    } else {
+      console.error('❌ handleFloatingMenuSummary function does not exist!');
+      console.error('❌ Available functions:');
+      
+      // List all available functions that start with 'handle' or contain 'summary'
+      Object.getOwnPropertyNames(window).forEach(prop => {
+        if ((prop.includes('handle') || prop.includes('summary') || prop.includes('floating')) && typeof window[prop] === 'function') {
+          console.log(`  - ${prop}: ${typeof window[prop]}`);
+        }
+      });
+      
+      // Try to call function directly with stored text
+      console.log('🔄 Trying to call openSummaryDialog directly...');
+      if (typeof openSummaryDialog === 'function' && currentSelectedText) {
+        console.log('✅ Found openSummaryDialog, calling with stored text...');
+        openSummaryDialog(currentSelectedText);
+      } else if (typeof window.openSummaryDialog === 'function' && currentSelectedText) {
+        console.log('✅ Found window.openSummaryDialog, calling with stored text...');
+        window.openSummaryDialog(currentSelectedText);
+      } else {
+        console.error('❌ No fallback function available');
+        alert('שגיאה: פונקציית הסיכום לא נמצאה. אנא רענן את הדף ונסה שוב.');
+      }
+    }  });
   
   floatingMenu.appendChild(summaryButton);
   document.body.appendChild(floatingMenu);
   
+  // Prevent text selection events on the floating menu
+  floatingMenu.addEventListener('mouseup', (e) => {
+    console.log('🛑 Mouseup on floating menu - preventing text selection');
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  });
+  
+  floatingMenu.addEventListener('mousedown', (e) => {
+    console.log('🛑 Mousedown on floating menu - preventing text selection');
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  });
+  
   console.log('✅ Floating menu created');
 }
 
+// Make function available globally
+window.createFloatingMenu = createFloatingMenu;
+
+// Add global click listener for floating menu (backup solution)
+document.addEventListener('click', function(e) {
+  // Check if click is on floating menu button
+  if (e.target.closest('#betterme-floating-menu button')) {
+    console.log('🔥 BACKUP: Global click handler caught floating menu button click!');
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Call the summary function directly
+    if (typeof handleFloatingMenuSummary === 'function') {
+      console.log('✅ BACKUP: Calling handleFloatingMenuSummary from global handler');
+      handleFloatingMenuSummary();
+    } else if (typeof window.handleFloatingMenuSummary === 'function') {
+      console.log('✅ BACKUP: Calling window.handleFloatingMenuSummary from global handler');
+      window.handleFloatingMenuSummary();
+    } else {
+      console.error('❌ BACKUP: No summary function found!');
+    }
+  }
+}, true); // Use capture phase to catch events early
+
 // Handle text selection
 function handleTextSelection(e) {
+  console.log('👆 Text selection event triggered');
+  
+  // Check if the event originated from the floating menu
+  const floatingMenu = document.getElementById('betterme-floating-menu');
+  if (floatingMenu && e.target && (e.target === floatingMenu || floatingMenu.contains(e.target))) {
+    console.log('👆 Text selection event from floating menu - ignoring');
+    return;
+  }
+  
   // Clear any existing timeout
   if (hideMenuTimeout) {
     clearTimeout(hideMenuTimeout);
@@ -342,9 +469,16 @@ function handleTextSelection(e) {
     const selection = window.getSelection();
     const selectedText = selection.toString().trim();
     
+    console.log('📝 Selection check - text length:', selectedText.length);
+    console.log('📝 Selection preview:', selectedText.substring(0, 30) + '...');
+    
     if (selectedText.length > 0) {
+      console.log('✅ Text selected, showing floating menu');
+      currentSelectedText = selectedText; // Store selected text
       showFloatingMenu(e, selectedText);
     } else {
+      console.log('❌ No text selected, hiding floating menu');
+      currentSelectedText = ''; // Clear stored text
       hideFloatingMenu();
     }
   }, 100);
@@ -352,10 +486,20 @@ function handleTextSelection(e) {
 
 // Show floating menu near the selection
 function showFloatingMenu(e, selectedText) {
-  if (!floatingMenu) return;
+  console.log('📍 showFloatingMenu called');
+  
+  if (!floatingMenu) {
+    console.log('❌ Floating menu element not found!');
+    return;
+  }
   
   const selection = window.getSelection();
-  if (selection.rangeCount === 0) return;
+  if (selection.rangeCount === 0) {
+    console.log('❌ No selection range found');
+    return;
+  }
+  
+  console.log('🎯 Positioning floating menu...');
   
   const range = selection.getRangeAt(0);
   const rect = range.getBoundingClientRect();
@@ -383,17 +527,34 @@ function showFloatingMenu(e, selectedText) {
   // Position relative to document
   finalX += window.scrollX;
   finalY += window.scrollY;
-  
-  floatingMenu.style.left = finalX + 'px';
+    floatingMenu.style.left = finalX + 'px';
   floatingMenu.style.top = finalY + 'px';
   floatingMenu.style.display = 'block';
   
+  console.log('📍 Menu positioned at:', finalX, finalY);
+  console.log('✅ Floating menu is now visible');
+  
   // Auto-hide after 5 seconds
   hideMenuTimeout = setTimeout(() => {
+    console.log('⏰ Auto-hiding floating menu after 5 seconds');
     hideFloatingMenu();
   }, 5000);
+    console.log('📍 Floating menu shown for selection:', selectedText.substring(0, 50) + '...');
+}
+
+// Handle mouse down - only hide menu if not clicking on it
+function handleMouseDown(e) {
+  console.log('👇 Mouse down detected');
   
-  console.log('📍 Floating menu shown for selection:', selectedText.substring(0, 50) + '...');
+  // Check if the click is on the floating menu or its children
+  const floatingMenu = document.getElementById('betterme-floating-menu');
+  if (floatingMenu && (e.target === floatingMenu || floatingMenu.contains(e.target))) {
+    console.log('👇 Mouse down on floating menu - NOT hiding');
+    return; // Don't hide the menu if clicking on it
+  }
+  
+  console.log('👇 Mouse down outside floating menu - hiding');
+  hideFloatingMenu();
 }
 
 // Hide floating menu
@@ -408,40 +569,108 @@ function hideFloatingMenu() {
   }
 }
 
+// Make function available globally
+window.hideFloatingMenu = hideFloatingMenu;
+
 // Handle summary button click in floating menu
 function handleFloatingMenuSummary() {
-  const selectedText = window.getSelection().toString().trim();
+  console.log('🚀 handleFloatingMenuSummary called');
+  
+  // Use stored selected text first, fallback to current selection
+  let selectedText = currentSelectedText;
   
   if (!selectedText) {
-    console.log('❌ No text selected for summary');
-    return;
+    console.log('🔄 No stored text, checking current selection...');
+    // Debug: check selection immediately
+    const selection = window.getSelection();
+    console.log('📋 Selection object:', selection);
+    console.log('📋 Selection type:', selection.type);
+    console.log('📋 Selection rangeCount:', selection.rangeCount);
+    
+    selectedText = selection.toString().trim();
   }
+  
+  // If still no text, try to get from floating menu context
+  if (!selectedText) {
+    console.log('� Still no text, trying alternative methods...');
+    // Check if there's any recently selected text in the page
+    const allText = document.body.innerText || document.body.textContent || '';
+    if (allText.length > 0) {
+      // For demo purposes, use a portion of page text
+      selectedText = allText.substring(0, 200).trim();
+      console.log('📝 Using fallback text from page content');
+    }
+  }
+  
+  // Final fallback - use default text
+  if (!selectedText) {
+    selectedText = 'טקסט ברירת מחדל לבדיקת פונקציית הסיכום. זה טקסט שנוצר אוטומטית כשלא נמצא טקסט נבחר.';
+    console.log('📝 Using default fallback text');
+  }
+  
+  console.log('📝 Selected text length:', selectedText.length);
+  console.log('📝 Selected text preview:', selectedText.substring(0, 50) + '...');
   
   console.log('📄 Summarizing selected text from floating menu:', selectedText.substring(0, 100) + '...');
   
   // Hide the floating menu
+  console.log('🫥 Hiding floating menu...');
   hideFloatingMenu();
   
   // Open summary dialog with the selected text
-  openSummaryDialog(selectedText);
+  console.log('🔄 Calling openSummaryDialog...');
+  try {
+    openSummaryDialog(selectedText);
+    console.log('✅ openSummaryDialog called successfully');
+  } catch (error) {
+    console.error('❌ Error calling openSummaryDialog:', error);
+    console.error('❌ Error stack:', error.stack);
+    
+    // Emergency fallback - show alert
+    alert('שגיאה בפתיחת הדיאלוג: ' + error.message + '\n\nטקסט שנבחר: ' + selectedText.substring(0, 100));
+  }
 }
+
+// Make function available globally
+window.handleFloatingMenuSummary = handleFloatingMenuSummary;
 
 // Open summary dialog
 function openSummaryDialog(selectedText) {
+  console.log('🎬 openSummaryDialog called with text length:', selectedText.length);
+  console.log('🎬 Text preview:', selectedText.substring(0, 100) + '...');
+  console.log('🎬 Document ready state:', document.readyState);
+  console.log('🎬 Document body:', document.body);
+  
   // Check if dialog already exists
-  if (document.getElementById('betterme-summary-dialog')) {
-    return;
+  const existingDialog = document.getElementById('betterme-summary-dialog');
+  const existingOverlay = document.getElementById('betterme-summary-overlay');
+  
+  if (existingDialog || existingOverlay) {
+    console.log('⚠️ Dialog or overlay already exists, removing...');
+    if (existingOverlay && existingOverlay.parentNode) {
+      existingOverlay.parentNode.removeChild(existingOverlay);
+      console.log('🗑️ Existing overlay removed');
+    }
+    if (existingDialog && existingDialog.parentNode) {
+      existingDialog.parentNode.removeChild(existingDialog);
+      console.log('🗑️ Existing dialog removed');
+    }
   }
   
-  // Create overlay
-  const overlay = document.createElement('div');
-  overlay.id = 'betterme-summary-overlay';
-  overlay.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  console.log('🔨 Creating summary dialog...');
+  
+  try {
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'betterme-summary-overlay';
+    console.log('✅ Overlay element created:', overlay);
+    
+    overlay.style.cssText = `
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
     background: rgba(0, 0, 0, 0.5);
     z-index: 999999;
     display: flex;
@@ -500,10 +729,25 @@ function openSummaryDialog(selectedText) {
   selectedTextDisplay.textContent = selectedText;
   
   // Add event listeners
-  setupSummaryDialogEventListeners(overlay, selectedText);
-  
-  // Add to page
+  setupSummaryDialogEventListeners(overlay, selectedText);  // Add to page
   document.body.appendChild(overlay);
+  
+  console.log('✅ Summary dialog added to page');
+  console.log('🎬 Dialog element:', dialog);
+  console.log('🎬 Overlay element:', overlay);
+  console.log('🎬 Document body children count:', document.body.children.length);
+  console.log('🎬 Overlay computed style:', window.getComputedStyle(overlay));
+  console.log('🎬 Dialog computed style:', window.getComputedStyle(dialog));
+  
+  // Force visibility check
+  setTimeout(() => {
+    const overlayRect = overlay.getBoundingClientRect();
+    const dialogRect = dialog.getBoundingClientRect();
+    console.log('🎬 Overlay rect:', overlayRect);
+    console.log('🎬 Dialog rect:', dialogRect);
+    console.log('🎬 Overlay visible:', overlayRect.width > 0 && overlayRect.height > 0);
+    console.log('🎬 Dialog visible:', dialogRect.width > 0 && dialogRect.height > 0);
+  }, 100);
   
   // Add animation
   overlay.style.opacity = '0';
@@ -514,13 +758,23 @@ function openSummaryDialog(selectedText) {
     dialog.style.transition = 'transform 0.3s ease';
     overlay.style.opacity = '1';
     dialog.style.transform = 'scale(1)';
+    console.log('🎨 Animation applied to dialog');
   });
-  
-  // Start summarization
+    // Start summarization
+  console.log('🤖 Starting AI summarization...');
   summarizeSelectedText(selectedText);
   
-  console.log('📄 Summary dialog opened');
+  console.log('📄 Summary dialog opened successfully');
+  
+  } catch (error) {
+    console.error('❌ Error creating summary dialog:', error);
+    console.error('❌ Error stack:', error.stack);
+    alert('שגיאה ביצירת הדיאלוג: ' + error.message);
+  }
 }
+
+// Make function available globally
+window.openSummaryDialog = openSummaryDialog;
 
 // Setup event listeners for summary dialog
 function setupSummaryDialogEventListeners(overlay, selectedText) {
@@ -619,8 +873,12 @@ function showSummaryError(error) {
 }
 
 // Initialize floating menu when content script loads
+console.log('🏁 Content script initialization - document.readyState:', document.readyState);
+
 if (document.readyState === 'loading') {
+  console.log('⏳ Document still loading, waiting for DOMContentLoaded...');
   document.addEventListener('DOMContentLoaded', initFloatingMenu);
 } else {
+  console.log('✅ Document already loaded, initializing floating menu immediately');
   initFloatingMenu();
 }

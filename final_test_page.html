@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקה אחרונה - כפתור סיכום</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            color: #333;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .big-text {
+            font-size: 18px;
+            line-height: 2;
+            background: #e3f2fd;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 3px solid #2196f3;
+            user-select: text;
+            cursor: text;
+        }
+        .instructions {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ffc107;
+            margin: 20px 0;
+        }
+        .test-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 15px;
+            font-weight: bold;
+        }
+        .test-button:hover {
+            background: #218838;
+        }
+        .status {
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 בדיקה אחרונה - כפתור "סכם טקסט מסומן"</h1>
+        
+        <div class="instructions">
+            <h3>📋 הוראות פשוטות:</h3>
+            <ol>
+                <li><strong>בדוק שהתוסף נטען:</strong> לחץ על "בדוק תוסף"</li>
+                <li><strong>בדוק דיאלוג ישירות:</strong> לחץ על "פתח דיאלוג"</li>
+                <li><strong>בדוק תפריט צף:</strong> בחר את הטקסט הכחול למטה</li>
+                <li><strong>לחץ על הכפתור:</strong> כשמופיע התפריט הצף</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="test-button" onclick="checkAll()">🔍 בדוק תוסף</button>
+            <button class="test-button" onclick="forceDialog()">🚀 פתח דיאלוג</button>
+            <button class="test-button" onclick="forceMenu()">📱 הצג תפריט צף</button>
+        </div>
+
+        <div id="status" class="status warning" style="display: none;">מחכה...</div>
+
+        <div class="big-text">
+            <strong>בחר את הטקסט הזה!</strong><br><br>
+            זהו טקסט גדול וברור לבדיקת התפריט הצף של Better Me. 
+            כשתבחר את הטקסט הזה, אמור להופיע תפריט צף עם כפתור 
+            "📄 סכם טקסט מסומן". לחיצה על הכפתור אמורה לפתוח 
+            דיאלוג מודאלי שמציג את הטקסט שבחרת ומתחיל תהליך 
+            סיכום עם בינה מלאכותית. אם זה לא קורה, יש בעיה שצריך לתקן.
+        </div>
+
+        <div class="instructions">
+            <h3>🔍 מה לחפש:</h3>
+            <ul>
+                <li>✅ אחרי בחירת טקסט - תפריט צף מופיע</li>
+                <li>✅ אחרי לחיצה על הכפתור - דיאלוג נפתח</li>
+                <li>✅ הדיאלוג מציג את הטקסט שנבחר</li>
+                <li>✅ מתחיל תהליך "מסכם עם AI..."</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type = 'warning') {
+            const status = document.getElementById('status');
+            status.className = `status ${type}`;
+            status.textContent = message;
+            status.style.display = 'block';
+        }
+
+        function checkAll() {
+            console.log('🔍 Comprehensive extension check...');
+            
+            // Check extension API
+            if (typeof chrome === 'undefined' || !chrome.runtime) {
+                showStatus('❌ תוסף Chrome לא נטען! טען את התוסף ב-chrome://extensions/', 'error');
+                return;
+            }
+            
+            // Check functions
+            const functions = ['openSummaryDialog', 'handleFloatingMenuSummary', 'initFloatingMenu'];
+            const missing = functions.filter(func => typeof window[func] !== 'function');
+            
+            if (missing.length > 0) {
+                showStatus(`❌ חסרות פונקציות: ${missing.join(', ')}`, 'error');
+                return;
+            }
+            
+            // Check menu element
+            const menu = document.getElementById('betterme-floating-menu');
+            if (!menu) {
+                showStatus('❌ אלמנט התפריט הצף לא נמצא', 'error');
+                return;
+            }
+            
+            showStatus('✅ כל הבדיקות עברו בהצלחה! בחר טקסט לבדיקה', 'success');
+        }
+
+        function forceDialog() {
+            console.log('🚀 Force opening dialog...');
+            
+            if (typeof window.openSummaryDialog === 'function') {
+                showStatus('✅ פותח דיאלוג בכוח...', 'success');
+                const testText = 'זהו טקסט בדיקה שנוצר ישירות מהכפתור הכחול. אם אתה רואה את הטקסט הזה בדיאלוג, זה אומר שהפונקציה עובדת כמו שצריך!';
+                
+                try {
+                    window.openSummaryDialog(testText);
+                    showStatus('✅ דיאלוג נפתח בהצלחה!', 'success');
+                } catch (error) {
+                    showStatus('❌ שגיאה בפתיחת הדיאלוג: ' + error.message, 'error');
+                }
+            } else {
+                showStatus('❌ פונקציית openSummaryDialog לא נמצאה', 'error');
+            }
+        }
+
+        function forceMenu() {
+            console.log('📱 Force showing floating menu...');
+            
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                // Position menu in center of screen
+                menu.style.position = 'fixed';
+                menu.style.top = '50%';
+                menu.style.left = '50%';
+                menu.style.transform = 'translate(-50%, -50%)';
+                menu.style.display = 'block';
+                menu.style.zIndex = '999999';
+                menu.style.background = 'white';
+                menu.style.border = '3px solid #007bff';
+                menu.style.padding = '20px';
+                menu.style.borderRadius = '10px';
+                menu.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+                
+                showStatus('✅ תפריט צף מוצג במרכז המסך - לחץ על הכפתור!', 'success');
+                
+                // Hide after 10 seconds
+                setTimeout(() => {
+                    menu.style.display = 'none';
+                }, 10000);
+            } else {
+                showStatus('❌ תפריט צף לא נמצא', 'error');
+            }
+        }
+
+        // Monitor text selection
+        document.addEventListener('mouseup', () => {
+            setTimeout(() => {
+                const selectedText = window.getSelection().toString().trim();
+                if (selectedText.length > 20) {
+                    console.log('📝 Text selected:', selectedText.substring(0, 50) + '...');
+                    showStatus(`✅ נבחר טקסט (${selectedText.length} תווים) - מחכה לתפריט צף...`, 'success');
+                    
+                    // Check if menu appears
+                    setTimeout(() => {
+                        const menu = document.getElementById('betterme-floating-menu');
+                        if (menu && menu.style.display === 'block') {
+                            showStatus('✅ תפריט צף מופיע! לחץ על "סכם טקסט מסומן"', 'success');
+                        } else {
+                            showStatus('❌ תפריט צף לא מופיע למרות שהטקסט נבחר', 'error');
+                        }
+                    }, 300);
+                }
+            }, 100);
+        });
+
+        // Monitor clicks on floating menu
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#betterme-floating-menu')) {
+                console.log('🔥 Click detected on floating menu!');
+                showStatus('✅ זוהתה לחיצה על התפריט הצף - בודק אם נפתח דיאלוג...', 'success');
+                
+                setTimeout(() => {
+                    const dialog = document.getElementById('betterme-summary-dialog');
+                    if (dialog) {
+                        showStatus('✅ דיאלוג נפתח בהצלחה אחרי לחיצה על התפריט!', 'success');
+                    } else {
+                        showStatus('❌ דיאלוג לא נפתח למרות הלחיצה על התפריט', 'error');
+                    }
+                }, 500);
+            }
+        }, true);
+
+        // Auto-check on load
+        setTimeout(() => {
+            console.log('🚀 Auto-checking extension status...');
+            checkAll();
+        }, 1500);
+    </script>
+</body>
+</html>

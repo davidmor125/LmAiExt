@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דיבוג תפריט צף - Better Me</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #2c5282;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(44, 82, 130, 0.1);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .debug-panel {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #2c5282;
+        }
+        
+        .test-text {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px dashed #2c5282;
+            cursor: text;
+            user-select: text;
+        }
+        
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #2c5282;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 1000;
+            border: 2px solid #2c5282;
+        }
+        
+        .controls {
+            background: white;
+            border: 2px solid #2c5282;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .debug-btn {
+            background: #2c5282;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: bold;
+        }
+        
+        .debug-btn:hover {
+            background: #1a365d;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Better Me - דיבוג תפריט צף</div>
+
+    <div class="container">
+        <h1>🔧 דיבוג תפריט צף - Better Me</h1>
+        
+        <div class="controls">
+            <h3>פקדי דיבוג:</h3>
+            <button class="debug-btn" onclick="clearDebugLog()">נקה לוג</button>
+            <button class="debug-btn" onclick="checkFloatingMenu()">בדוק תפריט צף</button>
+            <button class="debug-btn" onclick="forceCreateMenu()">צור תפריט ידנית</button>
+            <button class="debug-btn" onclick="testSelection()">בדוק בחירה</button>
+        </div>
+        
+        <div class="debug-panel" id="debug-log">
+            <div>🔍 לוג דיבוג יופיע כאן...</div>
+        </div>
+        
+        <div class="test-text">
+            <h3>טקסט לבדיקה - סמן את הטקסט הזה:</h3>
+            <p>
+                זהו טקסט לבדיקת התפריט הצף. כאשר תסמן חלק מהטקסט הזה, אמור להופיע תפריט צף
+                עם כפתור "סכם טקסט מסומן". אם התפריט לא מופיע, בדוק את הלוג למטה.
+            </p>
+            <p>
+                בינה מלאכותית היא טכנולוגיה מתקדמת שמאפשרת למחשבים ללמוד ולבצע משימות 
+                שדורשות אינטליגנציה אנושית. התחום כולל למידת מכונה, עיבוד שפה טבעית, 
+                וזיהוי דפוסים.
+            </p>
+        </div>
+        
+        <div class="test-text">
+            <h3>עוד טקסט לבדיקה:</h3>
+            <p>
+                למידת מכונה (Machine Learning) היא תת-תחום של הבינה המלאכותית שמתמקד 
+                באלגוריתמים שיכולים ללמוד ולהשתפר מניסיון ללא תכנות ישיר של כל מקרה.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Debug log functionality
+        let debugLog = [];
+        
+        function addToDebugLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            debugLog.push(logEntry);
+            updateDebugDisplay();
+            console.log(logEntry);
+        }
+        
+        function updateDebugDisplay() {
+            const debugPanel = document.getElementById('debug-log');
+            debugPanel.innerHTML = debugLog.map(entry => `<div>${entry}</div>`).join('');
+            debugPanel.scrollTop = debugPanel.scrollHeight;
+        }
+        
+        function clearDebugLog() {
+            debugLog = [];
+            updateDebugDisplay();
+        }
+        
+        function checkFloatingMenu() {
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                addToDebugLog('✅ תפריט צף נמצא! Style.display: ' + menu.style.display);
+                addToDebugLog('📍 מיקום: ' + menu.style.left + ', ' + menu.style.top);
+            } else {
+                addToDebugLog('❌ תפריט צף לא נמצא!');
+            }
+        }
+        
+        function forceCreateMenu() {
+            if (typeof window.createFloatingMenu === 'function') {
+                window.createFloatingMenu();
+                addToDebugLog('🔧 נוסה ליצור תפריט ידנית');
+            } else {
+                addToDebugLog('❌ פונקציית createFloatingMenu לא זמינה');
+            }
+        }
+        
+        function testSelection() {
+            const selection = window.getSelection();
+            const selectedText = selection.toString().trim();
+            addToDebugLog('📝 טקסט נבחר: "' + selectedText + '" (אורך: ' + selectedText.length + ')');
+        }
+        
+        // Override console.log to capture Better Me logs
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            const message = args.join(' ');
+            if (message.includes('Better Me') || message.includes('🎯') || message.includes('📄') || 
+                message.includes('✅') || message.includes('❌') || message.includes('📍') ||
+                message.includes('🔥') || message.includes('🚀') || message.includes('🎬')) {
+                addToDebugLog(message);
+            }
+        };
+        
+        // Extension status check
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.getElementById('status');
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                statusDiv.textContent = 'Better Me - דיבוג פעיל ✅';
+                addToDebugLog('✅ תוסף Better Me זוהה');
+            } else {
+                statusDiv.textContent = 'Better Me - תוסף לא זוהה ❌';
+                statusDiv.style.color = '#e53e3e';
+                statusDiv.style.borderColor = '#e53e3e';
+                addToDebugLog('❌ תוסף Better Me לא זוהה');
+            }
+        });
+        
+        // Monitor text selection
+        document.addEventListener('mouseup', function() {
+            setTimeout(() => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString().trim();
+                if (selectedText.length > 0) {
+                    addToDebugLog('👆 טקסט נבחר: "' + selectedText.substring(0, 30) + '..." (אורך: ' + selectedText.length + ')');
+                    checkFloatingMenu();
+                }
+            }, 200);
+        });
+        
+        // Initial log
+        addToDebugLog('🏁 דף דיבוג נטען - מוכן לבדיקה');
+    </script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דיבאג בעיית הדיאלוג - Better Me</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #2c5282;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(44, 82, 130, 0.1);
+            border: 2px solid #e2e8f0;
+        }
+        
+        .debug-panel {
+            background: #f7fafc;
+            border: 2px solid #2c5282;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            direction: ltr;
+            text-align: left;
+        }
+        
+        .test-section {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .highlight-text {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .console-output {
+            height: 300px;
+            overflow-y: auto;
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 דיבאג בעיית הדיאלוג</h1>
+        <p>דף זה מיועד לבדיקת הבעיה שבה הדיאלוג לא נפתח כשלוחצים על "סכם טקסט מסומן"</p>
+        
+        <div class="debug-panel">
+            <h3>🛠️ הוראות דיבאג:</h3>
+            <ol>
+                <li>פתח את Developer Tools (F12)</li>
+                <li>עבור לטאב Console</li>
+                <li>בחר טקסט כלשהו בדף זה</li>
+                <li>לחץ על הכפתור "סכם טקסט מסומן" בתפריט הצף</li>
+                <li>עקב אחר הלוגים בקונסול</li>
+            </ol>
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 טקסט לבדיקה</h2>
+            <div class="highlight-text">
+                <strong>בחר את הטקסט הזה:</strong> זהו טקסט לדוגמה שאפשר לבחור ולסכם. הטקסט כולל מספר משפטים כדי שיהיה מה לסכם. טכנולוגיית הבינה המלאכותית מתפתחת במהירות ומשפיעה על חיינו בצורות רבות ומגוונות.
+            </div>
+            
+            <div class="highlight-text">
+                <strong>או את הטקסט הזה:</strong> הפיתוח של תוכנות ואפליקציות הוא תחום מרתק שמשלב יצירתיות עם חשיבה לוגית. כל יום מביא חידושים טכנולוגיים חדשים שמקלים על חיינו ומשפרים את איכות החיים שלנו.
+            </div>
+        </div>
+        
+        <div class="debug-panel">
+            <h3>📊 מעקב לוגים:</h3>
+            <div id="console-logs" class="console-output">
+                מעקב אחר לוגי הקונסול יופיע כאן...
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🧪 בדיקות ידניות:</h3>
+            <button onclick="testDialogFunction()" style="background: #2c5282; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px;">
+                בדוק פונקציית הדיאלוג ישירות
+            </button>
+            
+            <button onclick="testFloatingMenu()" style="background: #2c5282; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px;">
+                בדוק תפריט צף
+            </button>
+            
+            <button onclick="clearConsole()" style="background: #e53e3e; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px;">
+                נקה לוגים
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let logCount = 0;
+        const maxLogs = 50;
+        
+        // Override console.log to capture logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addLogToDisplay(type, ...args) {
+            const logDiv = document.getElementById('console-logs');
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            const color = {
+                log: '#00ff00',
+                error: '#ff4444',
+                warn: '#ffaa00'
+            }[type] || '#00ff00';
+            
+            logDiv.innerHTML += `<span style="color: ${color}">[${timestamp}] ${type.toUpperCase()}: ${message}</span>\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+            
+            logCount++;
+            if (logCount > maxLogs) {
+                const lines = logDiv.innerHTML.split('\n');
+                logDiv.innerHTML = lines.slice(-maxLogs).join('\n');
+                logCount = maxLogs;
+            }
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLogToDisplay('log', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLogToDisplay('error', ...args);
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLogToDisplay('warn', ...args);
+        };
+        
+        // Test functions
+        function testDialogFunction() {
+            console.log('🧪 Testing openSummaryDialog function directly...');
+            if (typeof openSummaryDialog === 'function') {
+                console.log('✅ openSummaryDialog function exists');
+                openSummaryDialog('טקסט בדיקה לדיאלוג');
+            } else {
+                console.error('❌ openSummaryDialog function not found!');
+            }
+        }
+        
+        function testFloatingMenu() {
+            console.log('🧪 Testing floating menu...');
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                console.log('✅ Floating menu element found:', menu);
+                console.log('Menu display style:', menu.style.display);
+            } else {
+                console.error('❌ Floating menu element not found!');
+            }
+        }
+        
+        function clearConsole() {
+            document.getElementById('console-logs').innerHTML = 'מעקב אחר לוגי הקונסול יופיע כאן...\n';
+            logCount = 0;
+        }
+        
+        // Initialize
+        console.log('🚀 Debug page loaded');
+        console.log('Document ready state:', document.readyState);
+        
+        // Wait for content script to load
+        setTimeout(() => {
+            console.log('🔍 Checking if content script functions are available...');
+            console.log('initFloatingMenu exists:', typeof initFloatingMenu === 'function');
+            console.log('createFloatingMenu exists:', typeof createFloatingMenu === 'function');
+            console.log('handleFloatingMenuSummary exists:', typeof handleFloatingMenuSummary === 'function');
+            console.log('openSummaryDialog exists:', typeof openSummaryDialog === 'function');
+        }, 1000);
+    </script>
+</body>
+</html>

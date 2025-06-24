@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דיבאג בעיית כפתור הסיכום</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .success { border-color: #28a745; background: #d4edda; }
+        .error { border-color: #dc3545; background: #f8d7da; }
+        .warning { border-color: #ffc107; background: #fff3cd; }
+        .test-text {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #2196f3;
+            font-size: 16px;
+            line-height: 1.8;
+            user-select: text;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            direction: ltr;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 דיבאג בעיית כפתור הסיכום</h1>
+        <p>דף זה יעזור לנו לזהות בדיוק איפה הבעיה</p>
+
+        <div id="step1" class="step">
+            <h3>שלב 1: בדיקת טעינת התוסף</h3>
+            <p id="extension-status">בודק...</p>
+            <button onclick="checkExtension()">בדוק שוב</button>
+        </div>
+
+        <div id="step2" class="step">
+            <h3>שלב 2: בדיקת קיום פונקציות</h3>
+            <p id="functions-status">בודק...</p>
+            <button onclick="checkFunctions()">בדוק פונקציות</button>
+        </div>
+
+        <div id="step3" class="step">
+            <h3>שלב 3: בדיקת אלמנט התפריט הצף</h3>
+            <p id="menu-status">בודק...</p>
+            <button onclick="checkMenu()">בדוק תפריט</button>
+        </div>
+
+        <div id="step4" class="step">
+            <h3>שלב 4: בדיקת פונקציית הדיאלוג</h3>
+            <p id="dialog-status">בודק...</p>
+            <button onclick="testDialog()">בדוק דיאלוג</button>
+        </div>
+
+        <div class="step">
+            <h3>שלב 5: בדיקת בחירת טקסט</h3>
+            <p>בחר את הטקסט למטה ובדוק מה קורה:</p>
+            <div class="test-text">
+                זהו טקסט לבדיקה של תפריט הצף. בחר את הטקסט הזה ובדוק אם מופיע תפריט עם כפתור "סכם טקסט מסומן". אם התפריט מופיע, לחץ על הכפתור ובדוק אם נפתח דיאלוג. זה טקסט ארוך מספיק כדי לבדוק את כל הפונקציונליות.
+            </div>
+            <p id="selection-status">המתן לבחירת טקסט...</p>
+        </div>
+
+        <div class="step">
+            <h3>📊 לוג קונסול:</h3>
+            <div id="console" class="console-output">מחכה ללוגים...</div>
+            <button onclick="clearConsole()">נקה לוג</button>
+        </div>
+    </div>
+
+    <script>
+        let logs = [];
+
+        // Override console to capture logs
+        const originalConsole = window.console;
+        window.console = {
+            ...originalConsole,
+            log: function(...args) {
+                originalConsole.log.apply(console, args);
+                addLog('LOG', args.join(' '));
+            },
+            error: function(...args) {
+                originalConsole.error.apply(console, args);
+                addLog('ERROR', args.join(' '));
+            },
+            warn: function(...args) {
+                originalConsole.warn.apply(console, args);
+                addLog('WARN', args.join(' '));
+            }
+        };
+
+        function addLog(type, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push(`[${timestamp}] ${type}: ${message}`);
+            if (logs.length > 50) logs = logs.slice(-50);
+            updateConsole();
+        }
+
+        function updateConsole() {
+            document.getElementById('console').textContent = logs.join('\n');
+            document.getElementById('console').scrollTop = document.getElementById('console').scrollHeight;
+        }
+
+        function clearConsole() {
+            logs = [];
+            updateConsole();
+            console.log('Console cleared');
+        }
+
+        function updateStep(stepId, className, message) {
+            const step = document.getElementById(stepId);
+            step.className = `step ${className}`;
+            step.querySelector('p').textContent = message;
+        }
+
+        function checkExtension() {
+            console.log('🔍 Checking if Chrome extension is loaded...');
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+                updateStep('step1', 'success', '✅ תוסף Chrome נטען בהצלחה');
+                console.log('✅ Chrome extension API available');
+                return true;
+            } else {
+                updateStep('step1', 'error', '❌ תוסף Chrome לא נטען או לא פעיל');
+                console.error('❌ Chrome extension API not available');
+                return false;
+            }
+        }
+
+        function checkFunctions() {
+            console.log('🔍 Checking extension functions...');
+            
+            const requiredFunctions = [
+                'openSummaryDialog',
+                'handleFloatingMenuSummary', 
+                'initFloatingMenu',
+                'createFloatingMenu'
+            ];
+
+            let found = 0;
+            let missing = [];
+
+            requiredFunctions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    console.log(`✅ Function ${funcName} found`);
+                    found++;
+                } else {
+                    console.error(`❌ Function ${funcName} NOT found`);
+                    missing.push(funcName);
+                }
+            });
+
+            if (found === requiredFunctions.length) {
+                updateStep('step2', 'success', `✅ כל ${found} הפונקציות נמצאו`);
+                return true;
+            } else {
+                updateStep('step2', 'error', `❌ חסרות ${missing.length} פונקציות: ${missing.join(', ')}`);
+                return false;
+            }
+        }
+
+        function checkMenu() {
+            console.log('🔍 Checking floating menu element...');
+            
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                console.log('✅ Floating menu element found');
+                console.log('Menu display:', menu.style.display);
+                console.log('Menu position:', menu.style.position);
+                console.log('Menu z-index:', menu.style.zIndex);
+                
+                // Check if menu has button
+                const button = menu.querySelector('button');
+                if (button) {
+                    console.log('✅ Menu button found:', button.textContent);
+                    updateStep('step3', 'success', '✅ תפריט צף ואת הכפתור נמצאו');
+                    return true;
+                } else {
+                    console.error('❌ Menu button not found');
+                    updateStep('step3', 'warning', '⚠️ תפריט צף נמצא אבל כפתור חסר');
+                    return false;
+                }
+            } else {
+                console.error('❌ Floating menu element not found');
+                updateStep('step3', 'error', '❌ אלמנט התפריט הצף לא נמצא');
+                return false;
+            }
+        }
+
+        function testDialog() {
+            console.log('🧪 Testing dialog function directly...');
+            
+            if (typeof window.openSummaryDialog === 'function') {
+                console.log('✅ openSummaryDialog function found');
+                try {
+                    const testText = 'זהו טקסט בדיקה ישיר מהכפתור לבדיקת הדיאלוג';
+                    console.log('🚀 Calling openSummaryDialog with test text...');
+                    window.openSummaryDialog(testText);
+                    
+                    // Check if dialog was created
+                    setTimeout(() => {
+                        const dialog = document.getElementById('betterme-summary-dialog');
+                        const overlay = document.getElementById('betterme-summary-overlay');
+                        
+                        if (dialog && overlay) {
+                            console.log('✅ Dialog and overlay created successfully');
+                            updateStep('step4', 'success', '✅ דיאלוג נוצר בהצלחה');
+                        } else {
+                            console.error('❌ Dialog or overlay not created');
+                            updateStep('step4', 'error', '❌ דיאלוג לא נוצר');
+                        }
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('❌ Error calling openSummaryDialog:', error);
+                    updateStep('step4', 'error', '❌ שגיאה בקריאה לפונקציה: ' + error.message);
+                }
+            } else {
+                console.error('❌ openSummaryDialog function not found');
+                updateStep('step4', 'error', '❌ פונקציית openSummaryDialog לא נמצאה');
+            }
+        }
+
+        // Monitor text selection
+        document.addEventListener('mouseup', () => {
+            setTimeout(() => {
+                const selectedText = window.getSelection().toString().trim();
+                if (selectedText.length > 10) {
+                    console.log('📝 Text selected:', selectedText.substring(0, 50) + '...');
+                    document.getElementById('selection-status').textContent = 
+                        `✅ נבחר טקסט באורך ${selectedText.length} תווים`;
+                    
+                    // Check if floating menu appears
+                    setTimeout(() => {
+                        checkMenuAfterSelection();
+                    }, 300);
+                } else {
+                    document.getElementById('selection-status').textContent = 'המתן לבחירת טקסט...';
+                }
+            }, 100);
+        });
+
+        function checkMenuAfterSelection() {
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                if (menu.style.display === 'block') {
+                    console.log('✅ Floating menu appeared after text selection');
+                    document.getElementById('selection-status').textContent += ' | ✅ תפריט צף מופיע';
+                    
+                    // Monitor clicks on the menu
+                    monitorMenuClicks();
+                } else {
+                    console.log('⚠️ Floating menu exists but not visible');
+                    document.getElementById('selection-status').textContent += ' | ⚠️ תפריט צף קיים אבל לא נראה';
+                }
+            } else {
+                console.error('❌ Floating menu not found after text selection');
+                document.getElementById('selection-status').textContent += ' | ❌ תפריט צף לא נמצא';
+            }
+        }
+
+        function monitorMenuClicks() {
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                const button = menu.querySelector('button');
+                if (button) {
+                    console.log('👀 Monitoring clicks on floating menu button');
+                    
+                    // Add click event listener for monitoring
+                    button.addEventListener('click', function(e) {
+                        console.log('🔥 DETECTED: Click on floating menu button!');
+                        console.log('🔥 Button text:', button.textContent);
+                        console.log('🔥 Event target:', e.target);
+                        
+                        // Check if dialog opens after click
+                        setTimeout(() => {
+                            const dialog = document.getElementById('betterme-summary-dialog');
+                            if (dialog) {
+                                console.log('✅ Dialog opened after menu click');
+                                document.getElementById('selection-status').textContent += ' | ✅ דיאלוג נפתח!';
+                            } else {
+                                console.error('❌ Dialog did NOT open after menu click');
+                                document.getElementById('selection-status').textContent += ' | ❌ דיאלוג לא נפתח!';
+                            }
+                        }, 500);
+                    }, { capture: true });
+                }
+            }
+        }
+
+        // Initial checks
+        setTimeout(() => {
+            console.log('🚀 Starting extension diagnostics...');
+            checkExtension();
+            setTimeout(checkFunctions, 500);
+            setTimeout(checkMenu, 1000);
+        }, 1000);
+
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('🚨 JavaScript Error:', e.message, 'at', e.filename + ':' + e.lineno);
+        });
+
+        console.log('🔧 Debug page loaded, starting diagnostics...');
+    </script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקה מפורטת - תפריט צף</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 20px;
+            background: #f0f2f5;
+            color: #333;
+        }
+        .test-area {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #2c5282;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .debug-panel {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            height: 300px;
+            overflow-y: auto;
+            margin: 20px 0;
+            white-space: pre-wrap;
+        }
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .btn {
+            background: #2c5282;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .btn:hover {
+            background: #1a365d;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>🔍 בדיקה מפורטת של תפריט הצף</h1>
+    
+    <div class="controls">
+        <button class="btn" onclick="checkExtensionStatus()">בדוק סטטוס תוסף</button>
+        <button class="btn" onclick="testFloatingMenu()">בדוק תפריט צף</button>
+        <button class="btn" onclick="testDialogDirect()">בדוק דיאלוג ישירות</button>
+        <button class="btn" onclick="clearDebugLog()">נקה לוג</button>
+    </div>
+
+    <div id="status-info" class="status warning">בודק...</div>
+
+    <div class="test-area">
+        <h3>📝 בחר את הטקסט הזה לבדיקה:</h3>
+        <p>
+            זהו טקסט דוגמה לבדיקת התפריט הצף של Better Me. כשתבחר את הטקסט הזה, 
+            אמור להופיע תפריט צף עם כפתור "סכם טקסט מסומן". לחיצה על הכפתור אמורה 
+            לפתוח דיאלוג מודאלי שמציג את הטקסט הנבחר ומבקש סיכום מהבינה המלאכותית.
+        </p>
+        <p>
+            אם התפריט לא מופיע או הדיאלוג לא נפתח, זה מעיד על בעיה בקוד התוסף 
+            שצריך לתקן. בדוק את הלוגים למטה כדי לראות מה קורה בדיוק.
+        </p>
+    </div>
+
+    <h3>🐛 לוג דיבאג:</h3>
+    <div id="debug-log" class="debug-panel">מחכה ללוגים...</div>
+
+    <script>
+        let logHistory = [];
+        const maxLogs = 100;
+
+        // Override console functions to capture logs
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn
+        };
+
+        function addToLog(type, message, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const fullMessage = [message, ...args].map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            const colorMap = {
+                log: '#00ff00',
+                error: '#ff4444', 
+                warn: '#ffaa00'
+            };
+            
+            const logEntry = {
+                timestamp,
+                type,
+                message: fullMessage,
+                color: colorMap[type] || '#00ff00'
+            };
+            
+            logHistory.push(logEntry);
+            if (logHistory.length > maxLogs) {
+                logHistory = logHistory.slice(-maxLogs);
+            }
+            
+            updateDebugDisplay();
+            
+            // Call original console function
+            originalConsole[type].apply(console, [message, ...args]);
+        }
+
+        console.log = (...args) => addToLog('log', ...args);
+        console.error = (...args) => addToLog('error', ...args);
+        console.warn = (...args) => addToLog('warn', ...args);
+
+        function updateDebugDisplay() {
+            const debugDiv = document.getElementById('debug-log');
+            debugDiv.innerHTML = logHistory.map(entry => 
+                `<span style="color: ${entry.color}">[${entry.timestamp}] ${entry.type.toUpperCase()}: ${entry.message}</span>`
+            ).join('\n');
+            debugDiv.scrollTop = debugDiv.scrollHeight;
+        }
+
+        function checkExtensionStatus() {
+            console.log('🔍 Checking extension status...');
+            
+            const statusDiv = document.getElementById('status-info');
+            
+            // Check if Chrome extension API is available
+            if (typeof chrome === 'undefined' || !chrome.runtime) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Chrome extension API לא זמין';
+                console.error('Chrome extension API not available');
+                return;
+            }
+            
+            console.log('✅ Chrome extension API available');
+            
+            // Check for content script functions
+            const extensionFunctions = [
+                'initFloatingMenu',
+                'createFloatingMenu',
+                'handleFloatingMenuSummary', 
+                'openSummaryDialog',
+                'showFloatingMenu',
+                'hideFloatingMenu'
+            ];
+            
+            let functionsFound = 0;
+            extensionFunctions.forEach(funcName => {
+                if (typeof window[funcName] === 'function') {
+                    console.log(`✅ Function ${funcName} found`);
+                    functionsFound++;
+                } else {
+                    console.error(`❌ Function ${funcName} NOT found`);
+                }
+            });
+            
+            // Check for DOM elements
+            const floatingMenu = document.getElementById('betterme-floating-menu');
+            if (floatingMenu) {
+                console.log('✅ Floating menu element found:', floatingMenu);
+                console.log('Menu display:', floatingMenu.style.display);
+                console.log('Menu position:', {
+                    left: floatingMenu.style.left,
+                    top: floatingMenu.style.top,
+                    zIndex: floatingMenu.style.zIndex
+                });
+            } else {
+                console.error('❌ Floating menu element NOT found');
+            }
+            
+            // Update status
+            if (functionsFound === extensionFunctions.length && floatingMenu) {
+                statusDiv.className = 'status success';
+                statusDiv.textContent = '✅ תוסף נטען בהצלחה - כל הפונקציות זמינות';
+            } else if (functionsFound > 0) {
+                statusDiv.className = 'status warning';
+                statusDiv.textContent = `⚠️ תוסף נטען חלקית - ${functionsFound}/${extensionFunctions.length} פונקציות`;
+            } else {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ תוסף לא נטען או לא פועל';
+            }
+        }
+
+        function testFloatingMenu() {
+            console.log('🧪 Testing floating menu manually...');
+            
+            // Try to select text programmatically
+            const testArea = document.querySelector('.test-area p');
+            if (testArea) {
+                const range = document.createRange();
+                range.selectNodeContents(testArea);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                
+                console.log('📝 Text selected programmatically');
+                console.log('Selected text length:', selection.toString().length);
+                
+                // Trigger text selection event manually
+                if (typeof handleTextSelection === 'function') {
+                    console.log('🔄 Calling handleTextSelection manually...');
+                    handleTextSelection({});
+                } else {
+                    console.error('❌ handleTextSelection function not found');
+                }
+            }
+        }
+
+        function testDialogDirect() {
+            console.log('🚀 Testing dialog function directly...');
+            
+            if (typeof openSummaryDialog === 'function') {
+                console.log('✅ openSummaryDialog function found, calling...');
+                const testText = 'זהו טקסט בדיקה שנוצר ישירות לבדיקת פונקציית הדיאלוג. אם אתה רואה את הטקסט הזה בדיאלוג, זה אומר שהפונקציה עובדת כמו שצריך.';
+                openSummaryDialog(testText);
+            } else {
+                console.error('❌ openSummaryDialog function not found!');
+                alert('פונקציית openSummaryDialog לא נמצאה. התוסף לא נטען כראוי.');
+            }
+        }
+
+        function clearDebugLog() {
+            logHistory = [];
+            updateDebugDisplay();
+            console.log('🗑️ Debug log cleared');
+        }
+
+        // Listen for text selection
+        document.addEventListener('mouseup', (e) => {
+            setTimeout(() => {
+                const selectedText = window.getSelection().toString().trim();
+                if (selectedText.length > 0) {
+                    console.log(`👆 Text selected by user: "${selectedText.substring(0, 50)}..."`);
+                    console.log('Selection length:', selectedText.length);
+                    
+                    // Check if floating menu appears
+                    setTimeout(() => {
+                        const menu = document.getElementById('betterme-floating-menu');
+                        if (menu) {
+                            console.log('👀 Floating menu display status:', menu.style.display);
+                            if (menu.style.display === 'block') {
+                                console.log('✅ Floating menu is visible');
+                            } else {
+                                console.warn('⚠️ Floating menu exists but not visible');
+                            }
+                        } else {
+                            console.error('❌ Floating menu not found after text selection');
+                        }
+                    }, 200);
+                }
+            }, 100);
+        });
+
+        // Check status on load
+        setTimeout(() => {
+            console.log('🚀 Page loaded, checking extension status...');
+            checkExtensionStatus();
+        }, 1000);
+
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('🚨 JavaScript Error:', e.message);
+            console.error('🚨 File:', e.filename);
+            console.error('🚨 Line:', e.lineno);
+            console.error('🚨 Stack:', e.error?.stack);
+        });
+
+        // Also intercept clicks on floating menu if it exists
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('#betterme-floating-menu')) {
+                console.log('🔥 Click detected on floating menu element');
+                console.log('🔥 Clicked element:', e.target);
+                console.log('🔥 Event details:', {
+                    type: e.type,
+                    target: e.target.tagName,
+                    text: e.target.textContent
+                });
+            }
+        });
+    </script>
+</body>
+</html>

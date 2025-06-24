@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת תוסף בסיסית - Better Me</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #2c5282;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #2c5282;
+        }
+        .test-text {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #2c5282;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #2c5282;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 בדיקת תוסף Better Me</h1>
+        
+        <div class="instructions">
+            <h3>📋 הוראות:</h3>
+            <ol>
+                <li>וודא שהתוסף Better Me מותקן ופעיל בדפדפן</li>
+                <li>פתח את Developer Tools (F12) ועבור לטאב Console</li>
+                <li>בחר את הטקסט למטה</li>
+                <li>אמור לראות תפריט צף עם כפתור "סכם טקסט מסומן"</li>
+                <li>לחץ על הכפתור ובדוק אם נפתח דיאלוג</li>
+            </ol>
+        </div>
+
+        <div class="test-text">
+            זהו טקסט לבדיקה. בחר את הטקסט הזה כדי לבדוק אם התוסף פועל כראוי. הטקסט הזה אמור להציג תפריט צף כשמסמנים אותו. אם התוסף עובד, אמורה להופיע אפשרות לסכם את הטקסט המסומן.
+        </div>
+
+        <div id="status-container">
+            <h3>📊 סטטוס בדיקות:</h3>
+            <div id="extension-status" class="status warning">בודק אם התוסף נטען...</div>
+            <div id="menu-status" class="status warning">בודק תפריט צף...</div>
+            <div id="dialog-status" class="status warning">בודק דיאלוג סיכום...</div>
+        </div>        <div class="instructions">
+            <h3>🧪 בדיקות ידניות:</h3>
+            <button onclick="forceTestDialog()" style="background: #2c5282; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin: 10px 5px; font-size: 14px;">
+                🚀 פתח דיאלוג בכוח
+            </button>
+            <button onclick="checkExtensionStatus()" style="background: #28a745; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin: 10px 5px; font-size: 14px;">
+                🔍 בדוק סטטוס תוסף
+            </button>
+            <button onclick="clearLogs()" style="background: #dc3545; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin: 10px 5px; font-size: 14px;">
+                🗑️ נקה לוגים
+            </button>
+        </div>
+            <div id="debug-info" style="font-family: monospace; font-size: 12px; background: #f8f9fa; padding: 10px; border-radius: 5px;">
+                טוען...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(elementId, status, message) {
+            const element = document.getElementById(elementId);
+            element.className = `status ${status}`;
+            element.textContent = message;
+        }
+
+        function updateDebugInfo() {
+            const debugDiv = document.getElementById('debug-info');
+            let info = '';
+            
+            info += `Document Ready State: ${document.readyState}\n`;
+            info += `User Agent: ${navigator.userAgent}\n`;
+            info += `Page URL: ${window.location.href}\n`;
+            info += `Content Script Loaded: ${typeof chrome !== 'undefined' && chrome.runtime ? 'Yes' : 'No'}\n`;
+            
+            // Check for extension functions
+            const functions = [
+                'initFloatingMenu',
+                'createFloatingMenu', 
+                'handleFloatingMenuSummary',
+                'openSummaryDialog'
+            ];
+            
+            info += '\nExtension Functions:\n';
+            functions.forEach(func => {
+                info += `  ${func}: ${typeof window[func] === 'function' ? 'Available' : 'Not Found'}\n`;
+            });
+            
+            // Check for DOM elements
+            const menuElement = document.getElementById('betterme-floating-menu');
+            info += `\nFloating Menu Element: ${menuElement ? 'Found' : 'Not Found'}\n`;
+            
+            debugDiv.textContent = info;
+        }
+
+        // Initial checks
+        setTimeout(() => {
+            // Check if content script loaded
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                updateStatus('extension-status', 'success', '✅ תוסף נטען בהצלחה');
+            } else {
+                updateStatus('extension-status', 'error', '❌ תוסף לא נטען');
+            }
+            
+            // Check for floating menu
+            const menuElement = document.getElementById('betterme-floating-menu');
+            if (menuElement) {
+                updateStatus('menu-status', 'success', '✅ תפריט צף נוצר');
+            } else {
+                updateStatus('menu-status', 'error', '❌ תפריט צף לא נמצא');
+            }
+            
+            updateDebugInfo();
+        }, 2000);
+
+        // Check every 2 seconds
+        setInterval(() => {
+            updateDebugInfo();
+        }, 2000);
+
+        // Override console to capture extension logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        let extensionLogs = [];
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const message = args.join(' ');
+            if (message.includes('🔥') || message.includes('🚀') || message.includes('📄') || message.includes('✅')) {
+                extensionLogs.push(`LOG: ${message}`);
+                updateDebugFromLogs();
+            }
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            const message = args.join(' ');
+            if (message.includes('❌') || message.includes('🚨')) {
+                extensionLogs.push(`ERROR: ${message}`);
+                updateDebugFromLogs();
+            }
+        };
+        
+        function updateDebugFromLogs() {
+            const debugDiv = document.getElementById('debug-info');
+            let currentInfo = debugDiv.textContent;
+            
+            if (extensionLogs.length > 0) {
+                currentInfo += '\n\nRecent Extension Logs:\n';
+                extensionLogs.slice(-5).forEach(log => {
+                    currentInfo += `  ${log}\n`;
+                });
+            }
+            
+            debugDiv.textContent = currentInfo;
+        }
+
+        // Test dialog opening
+        function testDialog() {
+            if (typeof openSummaryDialog === 'function') {
+                updateStatus('dialog-status', 'success', '✅ פונקציית דיאלוג זמינה');
+                console.log('Testing dialog function...');
+                openSummaryDialog('טקסט בדיקה');
+            } else {
+                updateStatus('dialog-status', 'error', '❌ פונקציית דיאלוג לא זמינה');
+            }
+        }        // Listen for text selection
+        document.addEventListener('mouseup', (e) => {
+            setTimeout(() => {
+                const selectedText = window.getSelection().toString().trim();
+                if (selectedText.length > 0) {
+                    console.log('Text selected:', selectedText.substring(0, 50) + '...');
+                    setTimeout(testDialog, 500);
+                }
+            }, 100);
+        });
+
+        // New functions for testing
+        function forceTestDialog() {
+            console.log('🚀 Force testing dialog...');
+            if (typeof openSummaryDialog === 'function') {
+                console.log('✅ openSummaryDialog function found, calling...');
+                openSummaryDialog('זהו טקסט בדיקה שנוצר ישירות מהכפתור. הדיאלוג אמור להיפתח עכשיו ולהציג את הטקסט הזה בתוך הדיאלוג המודאלי.');
+                updateStatus('dialog-status', 'success', '✅ דיאלוג נקרא בכוח');
+            } else {
+                console.error('❌ openSummaryDialog function not found!');
+                updateStatus('dialog-status', 'error', '❌ פונקציה לא נמצאה');
+            }
+        }
+
+        function checkExtensionStatus() {
+            console.log('🔍 Checking extension status...');
+            updateDebugInfo();
+            
+            // Check floating menu
+            const menu = document.getElementById('betterme-floating-menu');
+            if (menu) {
+                console.log('✅ Floating menu found:', menu);
+                console.log('Menu styles:', {
+                    display: menu.style.display,
+                    position: menu.style.position,
+                    zIndex: menu.style.zIndex
+                });
+            }
+            
+            // Check for any existing dialogs
+            const existingDialog = document.getElementById('betterme-summary-dialog');
+            const existingOverlay = document.getElementById('betterme-summary-overlay');
+            
+            console.log('Existing dialog:', existingDialog);
+            console.log('Existing overlay:', existingOverlay);
+        }
+
+        function clearLogs() {
+            console.clear();
+            extensionLogs = [];
+            const debugDiv = document.getElementById('debug-info');
+            debugDiv.textContent = 'לוגים נוקו...';
+            
+            // Reset status
+            updateStatus('extension-status', 'warning', 'בודק מחדש...');
+            updateStatus('menu-status', 'warning', 'בודק מחדש...');
+            updateStatus('dialog-status', 'warning', 'בודק מחדש...');
+            
+            setTimeout(checkExtensionStatus, 500);
+        }
+    </script>
+</body>
+</html>
