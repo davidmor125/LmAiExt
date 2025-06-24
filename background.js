@@ -49,13 +49,12 @@ function initBetterMe() {
   }
   
   console.log('🚀 Better Me initializing...');
-  
-  // Create floating bubble button
+    // Create floating bubble button
   const bubble = document.createElement('div');
   bubble.id = 'betterme-bubble';
   bubble.innerHTML = `
-    <img src="${chrome.runtime.getURL('icons/chat_icon.png')}" style="width: 53px; height: 52px;" alt="Better Me">
-  `;  bubble.style.cssText = `
+    <span style="font-size: 24px; font-weight: bold; color: #2c5282;">BM</span>
+  `;bubble.style.cssText = `
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -180,11 +179,10 @@ function initBetterMe() {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     `;
       // Create dialog content
-    dialog.innerHTML = `
-      <div style="background: white; color: #2c5282; padding: 20px; position: relative; border-bottom: 2px solid #e2e8f0;">
+    dialog.innerHTML = `      <div style="background: white; color: #2c5282; padding: 20px; position: relative; border-bottom: 2px solid #e2e8f0;">
         <button id="betterme-close" style="position: absolute; top: 15px; left: 15px; background: none; border: none; color: #2c5282; font-size: 24px; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s;">✕</button>
         <div style="display: flex; align-items: center; gap: 15px; margin-right: 45px;">
-          <img src="${chrome.runtime.getURL('icons/chat_icon.png')}" style="width: 40px; height: 40px;" alt="Better Me">
+          <div style="width: 40px; height: 40px; background: #2c5282; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">BM</div>
           <div>
             <h2 style="margin: 0; font-size: 24px; color: #2c5282;">Better Me</h2>
             <p style="margin: 5px 0 0 0; color: #4a5568; font-size: 14px;">עוזר AI חכם לסיכום ושאלות</p>
@@ -219,7 +217,7 @@ function initBetterMe() {
       </div>
       
       <div style="padding: 15px 30px; background: white; border-top: 2px solid #e2e8f0; text-align: center;">
-        <button id="betterme-settings" style="background: white; border: 2px solid #e2e8f0; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: #2c5282; font-size: 14px;">⚙️ הגדרות</button>
+        <button id="betterme-settings" style="background: white; border: 2px solid #e2e8f0; padding: 8px 16px; border-radius: 6px; cursor: pointer; color: #2c5282; font-size: 14px;">הגדרות</button>
       </div>
     `;
     

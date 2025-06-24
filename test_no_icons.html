@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Better Me - בדיקת ממשק ללא אייקונים</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c5282;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+        
+        .test-section h3 {
+            color: #2c5282;
+            margin-top: 0;
+        }
+        
+        .button-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .demo-button {
+            background: white;
+            color: #2c5282;
+            border: 2px solid #2c5282;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .demo-button:hover {
+            background: #2c5282;
+            color: white;
+        }
+        
+        .demo-button.primary {
+            background: #2c5282;
+            color: white;
+        }
+        
+        .demo-button.primary:hover {
+            background: #1a365d;
+        }
+        
+        .floating-bubble-demo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border: 2px solid #2c5282;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c5282;
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+        
+        .floating-bubble-demo:hover {
+            background: #2c5282;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .header-demo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            background: #2c5282;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .status {
+            background: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .test-text {
+            background: #fff5d4;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #fbd38d;
+            margin: 15px 0;
+            cursor: pointer;
+            user-select: text;
+        }
+        
+        .success {
+            color: #38a169;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Better Me - בדיקת ממשק ללא אייקונים</h1>
+        
+        <div class="test-section">
+            <h3>✅ כותרת ראשית</h3>
+            <div class="header-demo">
+                <div class="logo-section">
+                    <div class="logo-circle">BM</div>
+                    <h2 style="margin: 0; color: #2c5282;">Better Me</h2>
+                </div>
+                <button class="demo-button">הגדרות</button>
+            </div>
+            <p class="success">✓ הלוגו הוחלף ב"BM" בעיגול כחול, ללא אייקון תמונה</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ כפתורי הפעולה הראשיים</h3>
+            <div class="button-demo">
+                <button class="demo-button">סכם דף זה</button>
+                <button class="demo-button">סכם טקסט מסומן</button>
+                <button class="demo-button">שאל על הדף</button>
+                <button class="demo-button">שאל על הבחירה</button>
+            </div>
+            <p class="success">✓ כל הכפתורים ללא אייקונים - טקסט בלבד</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ כפתור הגדרות</h3>
+            <div class="button-demo">
+                <button class="demo-button">הגדרות</button>
+                <button class="demo-button primary">שלח שאלה</button>
+                <button class="demo-button">ביטול</button>
+            </div>
+            <p class="success">✓ הוסר האמוג'י ⚙️ מכפתור ההגדרות</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ בועה צפה (Floating Bubble)</h3>
+            <div style="position: relative; height: 80px; border: 1px dashed #2c5282; border-radius: 10px; background: #f0f7ff;">
+                <div style="position: absolute; bottom: 10px; right: 10px; width: 50px; height: 50px; background: white; border: 2px solid #2c5282; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #2c5282;">
+                    BM
+                </div>
+            </div>
+            <p class="success">✓ הבועה הצפה מציגה "BM" במקום תמונת אייקון</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>✅ דיאלוג/מודל ראשי</h3>
+            <div style="border: 2px solid #2c5282; border-radius: 10px; background: white; padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 15px;">
+                    <div class="logo-circle">BM</div>
+                    <div>
+                        <h3 style="margin: 0; color: #2c5282;">Better Me</h3>
+                        <p style="margin: 5px 0 0 0; color: #4a5568; font-size: 14px;">עוזר AI חכם לסיכום ושאלות</p>
+                    </div>
+                </div>
+                <div class="button-demo">
+                    <button class="demo-button">סכם דף זה</button>
+                    <button class="demo-button">שאל על הדף</button>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button class="demo-button">הגדרות</button>
+                </div>
+            </div>
+            <p class="success">✓ הדיאלוג הראשי מציג לוגו "BM" במקום תמונת אייקון</p>
+        </div>
+        
+        <div class="test-section">
+            <h3>🎯 טקסט לבדיקה</h3>
+            <div class="test-text" onclick="selectText(this)">
+                בחר את הטקסט הזה כדי לבדוק שהתפריט הצף מופיע ללא אייקונים.
+                טקסט זה מיועד לבדיקת התפריט הצף שאמור להופיע כשבוחרים טקסט.
+                לחץ כאן ובחר טקסט כדי לראות שהכפתור "סכם טקסט מסומן" מופיע ללא אייקונים.
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h3>📋 רשימת השינויים שבוצעו</h3>
+            <ul class="feature-list">
+                <li>✅ הוסרה תמונת האייקון מהבועה הצפה - הוחלפה ב"BM"</li>
+                <li>✅ הוסרה תמונת האייקון מכותרת הדיאלוג - הוחלפה בעיגול "BM"</li>
+                <li>✅ הוסר האמוג'י ⚙️ מכפתור ההגדרות</li>
+                <li>✅ הוסרה תמונת האייקון מ-popup.html</li>
+                <li>✅ הוסרה תמונת האייקון מ-popup_window.html</li>
+                <li>✅ עודכנו קבצי popup.js עם טקסט ללא אמוג'י</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 לבדיקה מלאה</h3>
+            <ol style="color: #2c5282;">
+                <li>טען את התוסף ב-Chrome</li>
+                <li>בדוק שהבועה הצפה מציגה "BM" ללא תמונה</li>
+                <li>פתח את הפופאפ ובדוק שהכותרת ללא תמונה</li>
+                <li>בדוק שכפתור ההגדרות ללא אמוג'י</li>
+                <li>בחר טקסט ובדוק שהתפריט הצף ללא אייקונים</li>
+                <li>פתח דיאלוג ובדוק שהכותרת עם "BM" ללא תמונה</li>
+            </ol>
+        </div>
+    </div>
+    
+    <!-- דמו של הבועה הצפה -->
+    <div class="floating-bubble-demo" title="Better Me - בועה צפה ללא אייקון">
+        BM
+    </div>
+    
+    <script>
+        function selectText(element) {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            console.log('✅ טקסט נבחר - בדוק שהתפריט הצף מופיע ללא אייקונים');
+        }
+        
+        console.log('🎯 דף בדיקת אייקונים נטען');
+        console.log('✅ כל האייקונים הוסרו מהממשק');
+    </script>
+</body>
+</html>
