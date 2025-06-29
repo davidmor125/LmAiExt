@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('modelName').addEventListener('change', saveSettings);
   document.getElementById('apiType').addEventListener('change', saveSettings);
   document.getElementById('summaryLanguage').addEventListener('change', saveSettings);
+  document.getElementById('enableStreaming').addEventListener('change', saveSettings);
 
   // Summarize buttons
   document.getElementById('summarizePage').addEventListener('click', () => summarize('page'));
@@ -38,12 +39,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function loadSettings() {
     console.log('Loading AI settings...');
-    chrome.storage.sync.get(['apiUrl', 'modelName', 'apiType', 'summaryLanguage'], function(result) {
+    chrome.storage.sync.get(['apiUrl', 'modelName', 'apiType', 'summaryLanguage', 'enableStreaming'], function(result) {
       console.log('Settings loaded:', result);
       document.getElementById('apiUrl').value = result.apiUrl || 'http://localhost:1234/v1/chat/completions';
       document.getElementById('modelName').value = result.modelName || 'lmstudio-model';
       document.getElementById('apiType').value = result.apiType || 'lmstudio';
       document.getElementById('summaryLanguage').value = result.summaryLanguage || 'hebrew';
+      document.getElementById('enableStreaming').checked = result.enableStreaming || false;
     });
   }
 
@@ -52,7 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
       apiUrl: document.getElementById('apiUrl').value,
       modelName: document.getElementById('modelName').value,
       apiType: document.getElementById('apiType').value,
-      summaryLanguage: document.getElementById('summaryLanguage').value
+      summaryLanguage: document.getElementById('summaryLanguage').value,
+      enableStreaming: document.getElementById('enableStreaming').checked
     };
     chrome.storage.sync.set(settings);
     console.log('Settings saved:', settings);
@@ -151,15 +154,16 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Sending to AI model, content length:', content.length);
     try {
       const settings = await new Promise(resolve => {
-        chrome.storage.sync.get(['apiUrl', 'modelName', 'apiType', 'summaryLanguage'], resolve);
+        chrome.storage.sync.get(['apiUrl', 'modelName', 'apiType', 'summaryLanguage', 'enableStreaming'], resolve);
       });
 
       const apiUrl = settings.apiUrl || 'http://localhost:1234/v1/chat/completions';
       const modelName = settings.modelName || 'lmstudio-model';
       const apiType = settings.apiType || 'lmstudio';
       const summaryLanguage = settings.summaryLanguage || 'hebrew';
+      const enableStreaming = settings.enableStreaming || false;
       
-      console.log('AI settings:', {apiUrl, modelName, apiType, summaryLanguage});
+      console.log('AI settings:', {apiUrl, modelName, apiType, summaryLanguage, enableStreaming});
 
       if (!apiUrl) {
         throw new Error('נא להזין כתובת API');
@@ -180,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
               content: prompt
             }
           ],
-          stream: false,
+          stream: enableStreaming,
           options: {
             temperature: 0.7,
             num_predict: 1000
@@ -198,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
           ],
           max_tokens: 1000,
           temperature: 0.7,
-          stream: false
+          stream: enableStreaming
         };
       }
       
@@ -219,6 +223,13 @@ document.addEventListener('DOMContentLoaded', function() {
         throw new Error(`שגיאת API: ${response.status} - ${response.statusText}`);
       }
 
+      // Handle streaming response
+      if (enableStreaming && response.body) {
+        await handleStreamingResponse(response, apiType, resultDiv);
+        return;
+      }
+
+      // Handle non-streaming response
       const data = await response.json();
       console.log('API Response:', data);
       let summary = '';
@@ -258,6 +269,116 @@ document.addEventListener('DOMContentLoaded', function() {
     } finally {
       enableButtons();
     }
+  }
+
+  // Handle streaming response from AI API
+  async function handleStreamingResponse(response, apiType, resultDiv) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let fullResponse = '';
+    
+    // Initialize streaming display
+    showStreamingStart(resultDiv);
+    
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.trim() === '' || line.trim() === 'data: [DONE]') continue;
+          
+          if (line.startsWith('data: ')) {
+            try {
+              const jsonData = JSON.parse(line.slice(6));
+              let deltaContent = '';
+              
+              // Handle different API response formats
+              if (apiType === 'ollama') {
+                if (jsonData.response) {
+                  deltaContent = jsonData.response;
+                }
+              } else {
+                // LMStudio/OpenAI format
+                if (jsonData.choices && jsonData.choices[0] && jsonData.choices[0].delta) {
+                  deltaContent = jsonData.choices[0].delta.content || '';
+                }
+              }
+              
+              if (deltaContent) {
+                fullResponse += deltaContent;
+                updateStreamingDisplay(resultDiv, fullResponse, false);
+              }
+              
+              // Check if response is complete
+              if (jsonData.done || (jsonData.choices && jsonData.choices[0] && jsonData.choices[0].finish_reason)) {
+                break;
+              }
+              
+            } catch (parseError) {
+              console.error('Error parsing streaming data:', parseError);
+            }
+          }
+        }
+      }
+      
+      // Finalize streaming display
+      updateStreamingDisplay(resultDiv, fullResponse, true);
+      
+    } catch (error) {
+      console.error('Streaming error:', error);
+      throw error;
+    } finally {
+      reader.releaseLock();
+    }
+  }
+
+  // Show streaming start message
+  function showStreamingStart(resultDiv) {
+    resultDiv.innerHTML = `
+      <div class="summary-container">
+        <div class="summary" style="color: #1f295c; text-align: right; line-height: 1.6;">
+          <strong>🤖 סיכום:</strong><br><br>
+          <span id="streaming-cursor" style="animation: blink 1s infinite; color: #1f295c; font-weight: bold;">▊</span>
+        </div>
+      </div>
+    `;
+    
+    // Add blinking animation if not already added
+    if (!document.getElementById('popup-streaming-style')) {
+      const style = document.createElement('style');
+      style.id = 'popup-streaming-style';
+      style.textContent = `
+        @keyframes blink { 
+          0%, 50% { opacity: 1; } 
+          51%, 100% { opacity: 0; } 
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // Update streaming display
+  function updateStreamingDisplay(resultDiv, content, isComplete) {
+    let displayContent = content.replace(/\n/g, '<br>');
+    
+    // Add streaming cursor if not complete
+    if (!isComplete) {
+      displayContent += '<span id="streaming-cursor" style="animation: blink 1s infinite; color: #1f295c; font-weight: bold;">▊</span>';
+    }
+    
+    resultDiv.innerHTML = `
+      <div class="summary-container">
+        <div class="summary" style="color: #1f295c; text-align: right; line-height: 1.6;">
+          <strong>🤖 סיכום:</strong><br><br>
+          ${displayContent}
+        </div>
+      </div>
+    `;
   }
 
   function createPrompt(content, language) {
